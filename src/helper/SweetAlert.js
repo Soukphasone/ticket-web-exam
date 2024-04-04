@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 
 export const showErrorAlert = (message) => {
     Swal.fire({
-        title: 'Error!',
+        title: 'ດຳເນີນການບໍ່ສຳເລັດ!',
         text: message,
         icon: 'error',
         showConfirmButton: false,
@@ -13,7 +13,7 @@ export const showErrorAlert = (message) => {
 
 export const showSuccessAlert = (message) => {
     Swal.fire({
-        title: 'Success!',
+        title: 'ດຳເນີນການສຳເລັດ!',
         text: message,
         icon: 'success',
         showConfirmButton: false,
@@ -24,23 +24,25 @@ export const showSuccessAlert = (message) => {
 
 export const showConfirmationAlert = (onConfirm) => {
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: '<span style="font-size: smaller;">ທ່ານຕ້ອງການປ່ຽນສະຖານະແທ້ບໍ ?</span>',
+        // text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: `Yes, delete it!`
+        confirmButtonText: `ຕົກລົງ`,
+        cancelButtonText: `ຍົກເລີກແລ້ວ`, // Edited cancelButtonText
     }).then((result) => {
         if (result.isConfirmed) {
             onConfirm();
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Your work has been saved",
+                title: "ດຳເນີນການສຳເລັດ",
                 showConfirmButton: false,
                 timer: 1500
             });
         }
     });
 };
+

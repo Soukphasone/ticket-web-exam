@@ -41,15 +41,15 @@ function ReportCars() {//props
     return (
         <>
             <div className="card-report " style={{ boxShadow: "10px 10px" }}>
-                <h3>ລົດໃນຄອກຂະນະນີ້:</h3>
+                <h3 className='main-menu'>ລົດໃນຄອກຂະນະນີ້:</h3>
                 <hr></hr>
                 <div>
-                    <div style={{ display: "flex" }} className='report-title'><span>ລົດຈັກ :</span><p>{datacars.totalBike} ຄັນ </p></div>
-                    <div style={{ display: "flex" }} className='report-title'><span>ລົດຖີບ :</span><p>{datacars.totalCycle} ຄັນ </p></div>
-                    <div style={{ display: "flex" }} className='report-title'><span>ລົດໃຫຍ່ :</span><p>{datacars.totalCars} ຄັນ </p></div>
+                    <div style={{ display: "flex" }} className='font-content'><span className='font-content' >ລົດຈັກ :</span><p className='font-content'>{datacars.totalBike} ຄັນ </p></div>
+                    <div style={{ display: "flex" }} className='font-content'><span className='font-content' >ລົດຖີບ :</span><p className='font-content'>{datacars.totalCycle} ຄັນ </p></div>
+                    <div style={{ display: "flex" }} className='font-content'><span className='font-content' >ລົດໃຫຍ່ :</span><p className='font-content' >{datacars.totalCars} ຄັນ </p></div>
                 </div>
                 <Link as={Link} to="/Checkout">
-                    <Button style={{ marginTop: "0rem", color: "white", width: "100%", background: "#0B666A", border: "none", }} className='btn hover '> ເບິ່ງລາຍລະອຽດ</Button>
+                    <Button style={{ marginTop: "0rem", color: "white", width: "100%", background: "#FB6D48", border: "none", }} className='btn hover main-menu'> ເບິ່ງລາຍລະອຽດ</Button>
                 </Link>
             </div>
         </>

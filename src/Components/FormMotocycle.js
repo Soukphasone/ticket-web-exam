@@ -8,12 +8,14 @@ import Swal from "sweetalert2";
 import { submitCarForm } from "../Services/api";
 import { useNavigate } from "react-router-dom";
 import { showErrorAlert, showSuccessAlert } from "../helper/SweetAlert";
+import "../App";
+
 
 function Motocycle({ fetchData }) {
     const [showModal, setShowModal] = useState(false);
     const [sign, setSign] = useState("")
     const [carType, setCarType] = useState("ລົດຈັກ");
-    const [amount, setAmount] = useState("5000");
+    const [amount, setAmount] = useState("");
     const [note, setNote] = useState("");
     const [money, setMoney] = useState('');
     const navigate = useNavigate();
@@ -39,7 +41,7 @@ function Motocycle({ fetchData }) {
         try {
             await submitCarForm({ userId, sign, carType, amount, note, money, headers });
             navigate("/");
-            showSuccessAlert('Form submitted successfully.');
+            showSuccessAlert('');
             handleClose();
             fetchData();
             setSign('');
@@ -47,7 +49,7 @@ function Motocycle({ fetchData }) {
             setMoney('');
         } catch (error) {
             console.error("Error:", error);
-            showErrorAlert('An error occurred while submitting the form.');
+            showErrorAlert('');
         }
     };
 
@@ -56,7 +58,7 @@ function Motocycle({ fetchData }) {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow} className='Modal' size='md' style={{ backgroundColor: "#0B666A", color: "white", border: "none" }}>
+            <Button variant="primary" onClick={handleShow} className='Modal' size='md' style={{ backgroundColor: "#FB6D48", color: "white", border: "none" }}>
                 <FontAwesomeIcon icon={faMotorcycle} /> ລົດຈັກ
             </Button>
 
@@ -68,6 +70,7 @@ function Motocycle({ fetchData }) {
                     <Modal.Body>
                         <Form.Group controlId="formTitle" className='mb-2'>
                             <Form.Control
+                                className="font-content"
                                 type="text"
                                 placeholder="ໃສ່ທະບຽນລົດ ຫຼື ເລກກົງເຕີ"
                                 name="title"
@@ -77,22 +80,37 @@ function Motocycle({ fetchData }) {
                             {error && sign.trim() === '' && <div style={{ color: 'red' }}>Please enter a value for sign</div>}
                         </Form.Group>
                         <Form.Group >
-                            <Form.Control as="select" value={carType} onChange={(e) => setCarType(e.target.value)} required disabled className="mb-2">
+                            <Form.Control as="select"
+                                value={carType} onChange={(e) => setCarType(e.target.value)}
+                                required disabled className="mb-2 font-content">
                                 <option >ລົດຈັກ</option>
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group >
-                            <Form.Control as="select" value={amount} onChange={(e) => setAmount(e.target.value)} required disabled className="mb-2" >
-                                <option >5000</option>
+                        <Form.Group>
+                            <Form.Control
+                                as="select"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                required
+                                className="mb-2 font-content"
+                            >
+                                <option value="">ເລືອກລາຄາ</option>
+
+                                <option value="3000">3000</option>
+                                <option value="4000">4,000</option>
+                                <option value="5000">5,000</option>
+
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group controlId="formNote" className="mb-2">
+                        <Form.Group controlId="formNote"
+                            className="mb-2 font-content">
                             <Form.Control as="textarea" rows={3} value={note}
                                 onChange={(e) => setNote(e.target.value)} />
                         </Form.Group>
                         <Form.Group controlId="formPaymentMethod">
                             <div>
                                 <Form.Check
+                                    className="font-content"
                                     type="radio"
                                     name="money"
                                     defaultChecked={money === 'cash'}
@@ -100,6 +118,7 @@ function Motocycle({ fetchData }) {
                                     label={<span style={{ color: error && money.trim() === '' ? 'red' : '' }}>ເງິນສົດ</span>}
                                 />
                                 <Form.Check
+                                    className="font-content"
                                     type="radio"
                                     name="money"
                                     defaultChecked={money === 'transfer'}
@@ -112,10 +131,14 @@ function Motocycle({ fetchData }) {
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button variant="secondary"
+                            onClick={handleClose}
+                            className="font-content">
                             ຍົກເລີກ
                         </Button>
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary"
+                            type="submit"
+                            className="font-content">
                             ບັນທຶກ
                         </Button>
                     </Modal.Footer>

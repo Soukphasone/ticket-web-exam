@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ReportMoney from '../Components/ReportMonney';
 import ReportCars from '../Components/ReportCars';
 import Footer from '../Components/Footer';
@@ -12,8 +12,12 @@ import Navbarr from '../Components/Navbar';
 import { fetchData } from '../Services/api';
 import MotionContainer from '../helper/MotionContainer'; // Import the MotionContainer component
 import { Link, useNavigate } from 'react-router-dom';
+
+
+
 function Body() {
     const [datacars, setDataCars] = useState([]);
+
 
     const _fetchData = async () => {
         try {
@@ -27,8 +31,9 @@ function Body() {
     return (
         <>
             <Navbarr />
+
             <MotionContainer> {/* Use MotionContainer here */}
-                <Container>
+                <Container style={{ height: "100%" }}>
                     {/* <Breadcrumb>
                         <Breadcrumb.Item href='/'>ຫນ້າຫລັກ</Breadcrumb.Item>
                         <Breadcrumb.Item href='/Checkout'>ລົດໃນຄອກຂະນະນີ້ </Breadcrumb.Item>
@@ -36,15 +41,15 @@ function Body() {
                         <Breadcrumb.Item href="/moneyhistory">ປະຫວັດຍອດເງິນ</Breadcrumb.Item>
                     </Breadcrumb> */}
                     <div className='top-title'>
-                        <h1 style={{ color: 'white' }}>ລະບົບຈັດການປີ້ລົດ</h1>
+                        <h3 className='page-title'>ລະບົບຈັດການປີ້ລົດ</h3>
                         <hr></hr>
                     </div>
-
+                    {/* 
                     <div className='container-cars'>
                         <Cars fetchData={_fetchData} />
                         <Motocycle fetchData={_fetchData} />
                         <Bicycle fetchData={_fetchData} />
-                    </div>
+                    </div> */}
 
                     <Row className='justify-content-center'>
                         <Col xs={12} md={4}>
@@ -54,6 +59,7 @@ function Body() {
                             <ReportCars />
                         </Col>
                     </Row>
+                    <br></br>
                 </Container>
             </MotionContainer>
             <Footer />

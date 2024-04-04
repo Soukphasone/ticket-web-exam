@@ -5,6 +5,15 @@ import Body from '../Pages/Body';
 import Checkout from '../Pages/Checkout';
 import CarHistory from '../Pages/CarHistory';
 import BalanceHistoryForm from '../Pages/BanlanceHistory';
+import Setting from '../Pages/Setting';
+import DisplayData from '../Pages/DisplayData';
+import Adddata from '../Components/AddDataComponen';
+import Ticket from '../Pages/TicKet';
+import QRScanner from '../Components/QRScanner';
+import ConfirmScanner from '../Pages/ConfirmScanner';
+
+
+
 
 function Router() {
     // Retrieve the login status from localStorage on component mount
@@ -33,10 +42,18 @@ function Router() {
                         path="/login"
                         element={<LoginPage onLogin={handleLogin} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}
                     />
-                    <Route path="/" element={isLoggedIn ? <Body /> : <Navigate to="/login" />} />
+                    <Route path="/" element={isLoggedIn ? <Ticket /> : <Navigate to="/login" />} />
+                    <Route path="/report" element={isLoggedIn ? <Body /> : <Navigate to="/" />} />
                     <Route path="/Checkout" element={isLoggedIn ? <Checkout /> : <Navigate to="/" />} />
                     <Route path="/Carhistory" element={isLoggedIn ? <CarHistory /> : <Navigate to="/" />} />
                     <Route path="/moneyhistory" element={isLoggedIn ? <BalanceHistoryForm /> : <Navigate to="/" />} />
+                    <Route path="/setting" element={isLoggedIn ? <Setting /> : <Navigate to="/" />} />
+                    <Route path="/displaydata" element={isLoggedIn ? <DisplayData /> : <Navigate to="/" />} />
+                    <Route path="/adddata" element={isLoggedIn ? <Adddata /> : <Navigate to="/" />} />
+
+                    <Route path="/confirmscanner" element={isLoggedIn ? <ConfirmScanner /> : <Navigate to="/" />} />
+
+
                 </Routes>
             </BrowserRouter>
         </div>

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Table, Card, InputGroup, Pagination } from 'react-bootstrap';
+import { Container, Row, Col, Form, Table, Card, InputGroup, Pagination, Spinner } from 'react-bootstrap';
 import moment from 'moment';
 import '../App';
 import axios from 'axios';
@@ -11,6 +11,8 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router-dom';
 import { fetchCarHistory } from '../Services/api';
 import PaginationComponent from '../helper/PaginationComponent';
+import NoDataComponent from '../helper/NoDataComponents';
+import imgNoDaTa from "../asset/image/Animation - 1711077741146.gif"; // Import your image file here
 
 function CarHistory() {
     const [data, setData] = useState([])
@@ -19,13 +21,13 @@ function CarHistory() {
     const [dateFrom, setDateFrom] = useState('')
     const [dateTo, setDateTo] = useState('')
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [itemsPerPage, setItemsPerPage] = useState(30);
     const userId = localStorage.getItem('user_id').replace(/^"(.*)"$/, '$1');
+    const [loading, setLoading] = useState(true);
 
 
 
 
-    const h1 = { color: "white", marginTop: '15px' }
 
     const totalPages = Math.ceil(data.length / itemsPerPage);
     const pageNumbers = [];
@@ -48,9 +50,10 @@ function CarHistory() {
 
     const fetchData = async () => {
         try {
+            setLoading(true);
             const fetchedData = await fetchCarHistory({ sign, note, dateFrom, dateTo });
             setData(fetchedData);
-
+            setLoading(false);
         } catch (error) {
             console.error(error);
         }
@@ -69,10 +72,10 @@ function CarHistory() {
     return (
         <>
             <Navbarr />
-            <Container style={{ backgroundColor: "cadetblue", borderRadius: "20px 20px 0 0" }}>
+            <Container style={{ backgroundColor: "#FFAF45", borderRadius: "20px 20px 0 0", }} className='font-content'>
                 <Row>
                     <Col>
-                        <h1 style={h1}>ປະຫວັດລົດເຂົ້າ-ອອກ</h1>
+                        <h3 className='page-title p-2'>ປະຫວັດລົດເຂົ້າ-ອອກ</h3>
                     </Col>
                 </Row>
                 <br></br>
@@ -98,54 +101,41 @@ function CarHistory() {
                                     </InputGroup> {/* <Button variant="primary" type="submit" onClick={''} style={{ borderTopLeftRadius: "0px", borderBottomLeftRadius: "0px" }} >ຄົ້ນຫາ</Button> */}
                                 </Form.Group>
                             </Col>
-                            {/* <Col xs={12} md={3}>
-                                <Form.Group>
-                                    <InputGroup>
-                                        <InputGroup.Text id="basic-addon2" style={{ backgroundColor: "white" }}>
-                                            <FontAwesomeIcon icon={faMagnifyingGlass} className='' />
-                                        </InputGroup.Text>
-                                        <Form.Control
-                                            type="text"
-                                            onChange={(e) => setNote(e.target.value)}
-                                            placeholder='ຄົ້ນຫາຫມາຍເຫດ'
-                                        />
-                                    </InputGroup>
-                                </Form.Group>
-                            </Col> */}
+
                         </Row>
                     </Form>
                 </Row>
                 <br></br>
-                <Row style={{ marginTop: "-15px" }}>
+                <Row style={{ marginTop: "" }}>
                     <Col xs={6} md={3} className="justify-content-center mb-2"  >
-                        <Card className=''>
-                            <Card.Body style={{ textAlign: "center", }}>
-                                <Card.Title>ຈຳນວນລົດຖີບ :</Card.Title>
-                                <Card.Text>{countCycle()}</Card.Text>
+                        <Card style={{ backgroundColor: 'white' }}>
+                            <Card.Body style={{ textAlign: "center" }}>
+                                <Card.Title className='main-menu'>ຈຳນວນລົດຖີບ :</Card.Title>
+                                <Card.Text className='font-content'>{countCycle() || 0}</Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col xs={6} md={3} >
-                        <Card className=''  >
+                    <Col xs={6} md={3}>
+                        <Card className='font-content' style={{ backgroundColor: 'white' }}>
                             <Card.Body style={{ textAlign: "center" }}>
-                                <Card.Title>ຈຳນວນລົດຈັກ :</Card.Title>
-                                <Card.Text>{countBike()}</Card.Text>
+                                <Card.Title className='main-menu'>ຈຳນວນລົດຈັກ :</Card.Title>
+                                <Card.Text className='font-content'>{countBike() || 0}</Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col xs={6} md={3} >
-                        <Card className=''>
+                    <Col xs={6} md={3}>
+                        <Card className='font-content' style={{ backgroundColor: 'white' }}>
                             <Card.Body style={{ textAlign: "center" }}>
-                                <Card.Title  > ຈຳນວນລົດໃຫຍ່ :</Card.Title>
-                                <Card.Text>{countCar()}</Card.Text>
+                                <Card.Title className='main-menu'> ຈຳນວນລົດໃຫຍ່ :</Card.Title>
+                                <Card.Text className='font-content'>{countCar() || 0}</Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col xs={6} md={3} >
-                        <Card className=''>
+                    <Col xs={6} md={3}>
+                        <Card className='font-content' style={{ backgroundColor: 'white' }}>
                             <Card.Body style={{ textAlign: "center" }}>
-                                <Card.Title  > ຈຳນວນທັງໝົດ :</Card.Title>
-                                <Card.Text>{countCar() + countBike() + countCycle()}</Card.Text>
+                                <Card.Title className='main-menu'> ຈຳນວນທັງໝົດ :</Card.Title>
+                                <Card.Text className='font-content'>{countCar() + countBike() + countCycle() || 0}</Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -153,8 +143,8 @@ function CarHistory() {
                 <br></br>
                 <Row>
                     <Col>
-                        <Table striped bordered hover responsive>
-                            <thead>
+                        <Table striped bordered hover responsive >
+                            <thead className='main-menu'>
                                 <tr>
                                     <th>#</th>
                                     <th>ທະບຽນ/ເລກກົງເຕີ</th>
@@ -166,19 +156,47 @@ function CarHistory() {
                                     <th>ເວລາອອກ</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((row, i) => (
-                                    <tr key={i._id}>
-                                        <td>{i + 1}</td>
-                                        <td>{row?.sign || "---"}</td>
-                                        <td>{row?.carType}</td>
-                                        <td>{row?.amount}</td>
-                                        <td>{row?.money}</td>
-                                        <td>{row?.note}</td>
-                                        <td>{moment(row?.createdAt).format('YY-MM-DD, h:mm:ss a')}</td>
-                                        <td>{moment(row?.createdOut).format('YY-MM-DD, h:mm:ss a')}</td>
-                                    </ tr>
-                                ))}
+                            <tbody className='font-content'>
+                                {loading ? (
+                                    <tr>
+                                        <td colSpan="8" style={{ textAlign: "center" }}>
+                                            <Spinner animation="border" role="status">
+                                            </Spinner>
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    data.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="8" style={{ textAlign: "center" }}>
+                                                <div
+                                                    style={{
+                                                        fontSize: "18px",
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        color: "#6B7280",
+                                                        fontWeight: "400",
+
+                                                    }}>
+                                                    <NoDataComponent imgSrc={imgNoDaTa} altText="Sidebar Icon" /> ບໍ່ມີຂໍ້ມູນ/</div>
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((row, i) => (
+                                            <tr key={i}>
+                                                <td>{i + 1}</td>
+                                                <td>{row?.sign || "-"}</td>
+                                                <td>{row?.carType}</td>
+                                                <td>{row?.amount ? row.amount.toLocaleString() : "-"}</td>
+                                                <td>{row?.money}</td>
+                                                <td>{row?.note}</td>
+                                                <td>{moment(row?.createdAt).format('DD-MM-YY, h:mm:ss a')}</td>
+                                                <td>{moment(row?.createdOut).format('DD-MM-YY, h:mm:ss a')}</td>
+                                            </tr>
+                                        ))
+                                    )
+                                )}
                             </tbody>
                         </Table>
                         <br></br>

@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCar, faUser, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'; // Import necessary icons
 import { motion } from 'framer-motion';
-import { Row, Col, Spinner } from 'react-bootstrap';
+
 import { loginUser } from '../Services/api';
-import SingUp from '../Components/SingUp';
-import ForgetPassWord from '../Components/ForgetPassword';
+
+
 import Loading from '../helper/Loading';
 
 const LoginPage = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -36,7 +36,7 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn }) => {
         }
     }, []);
     return (
-        <section className="vh-100 " style={{ backgroundColor: " cadetblue", }} >
+        <section className="vh-100 " style={{ backgroundColor: " #FFAF45", }} >
             <motion.div className="container py-5 h-100 "
                 initial={{ x: "-100vw", y: 0 }}
                 animate={{ x: 0, y: 0 }}
@@ -54,16 +54,28 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn }) => {
                                         <form onSubmit={handleSubmit}>
                                             <div >
                                                 <div className="d-flex align-items-center mb-3 pb-1">
-                                                    <FontAwesomeIcon icon={faCar} style={{ color: "#0B666A" }} className='fas fa-cubes fa-3x me-3' />
-                                                    <span className="h1 fw-bold mb-0" style={{ color: "#000000A6", fontFamily: "monospace" }}>MY NOTE CARS</span>
+                                                    {/* <FontAwesomeIcon icon={faCar} style={{ color: "#FB6D48" }} className='fas fa-cubes fa-3x me-3' /> */}
+                                                    {/* <span className="h1 fw-bold mb-0" style={{ color: "#673F69", fontFamily: "monospace" }}>MY NOTE CARS</span> */}
                                                 </div>
                                                 <br></br>
-                                                <h3 className="fw-normal mb-3 pb-3" style={{ letterSpacing: "1px" }}>ເຂົ້າສູ່ລະບົບ</h3>
+                                                <h2 className="fw-normal mb-3 pb-3" style={{
+                                                    letterSpacing: "1px",
+                                                    color: "#673F69",
+                                                    display: "flex",
+                                                    justifyContent: "center", // Center horizontally
+                                                    alignItems: "center", // Center vertically
+                                                    textAlign: "center", // Center text
+                                                    fontWeight: 800 // Make text even more bold
+
+                                                }}>
+                                                    ເຂົ້າສູ່ລະບົບ
+                                                </h2>
+
                                             </div>
                                             <div className="form-outline mb-4">
                                                 <div className="input-group">
                                                     <span className="input-group-text" style={{ backgroundColor: "transparent", }}>
-                                                        <FontAwesomeIcon icon={faUser} style={{ color: "#0B666A" }} />
+                                                        <FontAwesomeIcon icon={faUser} style={{ color: "#FB6D48" }} />
                                                     </span>
                                                     <input type="text" id="name" className="form-control form-control-md" placeholder='ໃສ່ຊື່ບັນຊີ' value={name}
                                                         onChange={(e) => setName(e.target.value)} />
@@ -72,18 +84,18 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn }) => {
                                             <div className="form-outline mb-4">
                                                 <div className="input-group">
                                                     <span className="input-group-text" style={{ backgroundColor: "transparent", }}>
-                                                        <FontAwesomeIcon icon={faLock} style={{ color: "#0B666A" }} />
+                                                        <FontAwesomeIcon icon={faLock} style={{ color: "#FB6D48" }} />
                                                     </span>
                                                     <input type={showPassword ? "text" : "password"} id="password" className="form-control form-control-md" placeholder='ໃສ່ລະຫັດຜ່ານ' value={password}
                                                         onChange={(e) => setPassword(e.target.value)} />
                                                     <span className="input-group-text" style={{ cursor: 'pointer' }} onClick={togglePasswordVisibility}>
-                                                        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} style={{ color: "#0B666A" }} />
+                                                        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} style={{ color: "#FB6D48" }} />
                                                     </span>
                                                 </div>
                                             </div>
                                             {error && <div style={{ color: 'red' }}>{error}</div>}
                                             <div className="pt-1 mb-4" style={{ display: "flex", textAlign: "center", justifyContent: "end", }}>
-                                                <button className="btn btn-md btn-block" type="submit" style={{ backgroundColor: "#0B666A", color: 'white', width: "100%", boxShadow: " 5px 5px 5px #888888", display: "flex", justifyContent: "center" }}>
+                                                <button className="btn btn-md btn-block" type="submit" style={{ backgroundColor: "#FB6D48", color: 'white', width: "100%", boxShadow: " 5px 5px 5px #888888", display: "flex", justifyContent: "center" }}>
                                                     {loading ? <Loading /> : 'ຕົກລົງ'}
                                                 </button>
                                             </div>

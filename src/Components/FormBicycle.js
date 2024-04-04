@@ -9,13 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { submitCarForm } from "../Services/api";
 import { showErrorAlert, showSuccessAlert } from "../helper/SweetAlert";
 import Loading from "../helper/Loading";
+import "../App";
 
 
 function Bicycle({ fetchData }) {
     const [showModal, setShowModal] = useState(false);
     const [sign, setSign] = useState("")
     const [carType, setCarType] = useState("ລົດຖີບ");
-    const [amount, setAmount] = useState("3000");
+    const [amount, setAmount] = useState("");
     const [note, setNote] = useState("");
     const [money, setMoney] = useState('');
     const navigate = useNavigate();
@@ -41,7 +42,7 @@ function Bicycle({ fetchData }) {
             await submitCarForm({ userId, sign, carType, amount, note, money, headers });
 
             navigate("/");
-            showSuccessAlert('Form submitted successfully.');
+            showSuccessAlert('');
 
             handleClose();
             fetchData();
@@ -50,7 +51,7 @@ function Bicycle({ fetchData }) {
             setMoney('');
         } catch (error) {
             console.error("Error:", error);
-            showErrorAlert('An error occurred while submitting the form.');
+            showErrorAlert('');
         }
     };
 
@@ -59,7 +60,7 @@ function Bicycle({ fetchData }) {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow} className='Modal' size='md' style={{ backgroundColor: "#0B666A", color: "white", border: "none" }}>
+            <Button onClick={handleShow} className='Modal' size='md' style={{ backgroundColor: "#FB6D48", color: "white", border: "none" }}>
                 <FontAwesomeIcon icon={faBicycle} /> ລົດຖີບ
             </Button>
 
@@ -78,22 +79,41 @@ function Bicycle({ fetchData }) {
                             />
                         </Form.Group> */}
                         <Form.Group >
-                            <Form.Control as="select" value={carType} onChange={(e) => setCarType(e.target.value)} required disabled className="mb-2">
+                            <Form.Control as="select"
+                                value={carType} onChange={(e) => setCarType(e.target.value)}
+                                required disabled
+                                className="mb-2 font-content">
                                 <option >ລົດຖີບ</option>
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group >
-                            <Form.Control as="select" value={amount} onChange={(e) => setAmount(e.target.value)} required disabled className="mb-2" >
-                                <option >3000</option>
+                        <Form.Group>
+                            <Form.Control
+                                as="select"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                required
+                                className="mb-2 font-content"
+                            >
+                                <option value="">ເລືອກລາຄາ</option>
+                                <option value="1000">1,000</option>
+                                <option value="2000">2,000</option>
+                                <option value="30000">3,000</option>
+
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group controlId="formNote" className="mb-2">
-                            <Form.Control as="textarea" rows={3} value={note}
-                                onChange={(e) => setNote(e.target.value)} />
+                        <Form.Group controlId="formNote"
+                            className="mb-2 font-content">
+                            <Form.Control as="textarea"
+                                rows={3}
+                                value={note}
+                                onChange={(e) => setNote(e.target.value)}
+                                className=" font-content"
+                            />
                         </Form.Group>
                         <Form.Group controlId="formPaymentMethod">
                             <div>
                                 <Form.Check
+                                    className=" font-content"
                                     type="radio"
                                     name="money"
                                     defaultChecked={money === 'cash'}
@@ -101,6 +121,7 @@ function Bicycle({ fetchData }) {
                                     label={<span style={{ color: error && money.trim() === '' ? 'red' : '' }}>ເງິນສົດ</span>}
                                 />
                                 <Form.Check
+                                    className=" font-content"
                                     type="radio"
                                     name="money"
                                     defaultChecked={money === 'transfer'}
@@ -113,10 +134,10 @@ function Bicycle({ fetchData }) {
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button variant="secondary" onClick={handleClose} className=" font-content">
                             ຍົກເລີກ
                         </Button>
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" className=" font-content">
                             {loading ? <Loading /> : 'ຕົກລົງ'}
                         </Button>
                     </Modal.Footer>

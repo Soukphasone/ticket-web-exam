@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../App'
 import { Button } from 'react-bootstrap'
-import axios from 'axios'
+
 import { Link } from 'react-router-dom'
 import { fetchReportMoney } from '../Services/api'
 
@@ -50,14 +50,14 @@ function ReportMoney({ children }) {
     return (
 
         <div className="card-report" style={{ boxShadow: "10px 10px" }}>
-            <h3>ລວມຍອດມື້ນີ້ :</h3>
+            <h3 className='main-menu'>ລວມຍອດມື້ນີ້ :</h3>
             <hr></hr>
 
-            <div style={{ display: "flex" }}><p>ລວມຍອດ :</p><span>{TranfertotalToday() + CashtotalToday()} ກີບ </span></div>
-            <div style={{ display: "flex" }}><p>ເງິນໂອນ :</p><span>{TranfertotalToday()} ກີບ </span></div>
-            <div style={{ display: "flex" }}><p>ເງີນສົດ :</p><span> {CashtotalToday()} ກີບ </span></div>
+            <div style={{ display: "flex" }}><p className='font-content'>ລວມຍອດ :</p><span className='font-content' >{(TranfertotalToday() + CashtotalToday()).toLocaleString()} ກີບ </span></div>
+            <div style={{ display: "flex" }}><p className='font-content'>ເງິນໂອນ :</p><span className='font-content' >{TranfertotalToday().toLocaleString()} ກີບ </span></div>
+            <div style={{ display: "flex" }}><p className='font-content'>ເງີນສົດ :</p><span className='font-content' > {CashtotalToday().toLocaleString()} ກີບ </span></div>
             <Link as={Link} to="/moneyhistory">
-                <Button style={{ marginTop: "0rem", color: "white", width: "100%", background: "#0B666A", border: "none" }} className='btn '> ເບິ່ງລາຍລະອຽດ</Button>
+                <Button style={{ marginTop: "0rem", color: "white", width: "100%", background: "#FB6D48", border: "none" }} className='btn main-menu '> ເບິ່ງລາຍລະອຽດ</Button>
             </Link>
         </div>
 

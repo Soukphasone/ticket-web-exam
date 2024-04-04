@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Card } from "react-bootstrap";
-import "../App";
-import axios from "axios";
+
+
 import Navbarr from "../Components/Navbar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faCalculator, faMoneyBillAlt, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
 import { fetchOrders } from "../Services/api";
+import ".././App.css"
 
 const BalanceHistoryForm = (props) => {
     const [data, setData] = useState([]);
@@ -36,29 +37,30 @@ const BalanceHistoryForm = (props) => {
     useEffect(() => {
         fetchData();
     }, [dateFrom, dateTo, userId]);
+
     const Cashtotal = () => {
         return data
-            .filter((item) => item.money === "cash")
-            .reduce((total, item) => (total += item.amount), 0);
+            .filter((item) => item.money === "cash" && !isNaN(item.amount))
+            .reduce((total, item) => (total += parseFloat(item.amount)), 0);
     };
 
     const Tranfertotal = () => {
         return data
-            .filter((item) => item.money === "transfer")
-            .reduce((total, item) => (total += item.amount), 0);
+            .filter((item) => item.money === "transfer" && !isNaN(item.amount))
+            .reduce((total, item) => (total += parseFloat(item.amount)), 0);
     };
 
-    const h1 = { color: "white", marginTop: "15px" };
+
     return (
         <>
             <Navbarr />
             <Container
-                className="con-balance"
-                style={{ backgroundColor: "cadetblue", borderRadius: "20px 20px 0 0" }}
+                className="con-balance vh-100"
+                style={{ backgroundColor: "#FFAF45", borderRadius: "20px 20px 0 0", }}
             >
                 <Row>
                     <Col>
-                        <h1 style={h1}>ປະຫວັດຍອດເງິນ</h1>
+                        <h3 className="page-title">ປະຫວັດຍອດເງິນ</h3>
                     </Col>
                 </Row>
                 <br></br>
@@ -82,31 +84,33 @@ const BalanceHistoryForm = (props) => {
                 </Row>
                 <br></br>
                 <Row>
-                    <Col xs={4} md={4} className="justify-content-center">
-                        <Card>
+                    <Col xs={4} md={4} className="justify-content-center ">
+                        <Card text="white" style={{ backgroundColor: "#FB6D48" }}>
                             <Card.Body>
-                                <Card.Title>ເງິນໂອນ</Card.Title>
-                                <Card.Text>{Tranfertotal()}</Card.Text>
+                                <Card.Title className="main-menu" ><FontAwesomeIcon icon={faMoneyBillTransfer} /> ເງິນໂອນ | {Tranfertotal().toLocaleString()} ກີບ</Card.Title>
+                                <Card.Text></Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col xs={4} md={4} className="justify-content-center ">
+                        <Card style={{ backgroundColor: "#D74B76" }} text="white">
+                            <Card.Body>
+                                <Card.Title className="main-menu"><FontAwesomeIcon icon={faMoneyBillAlt} /> ເງິນສົດ | {Cashtotal().toLocaleString()} ກີບ</Card.Title>
+                                <Card.Text></Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
                     <Col xs={4} md={4} className="justify-content-center">
-                        <Card>
+                        <Card style={{ backgroundColor: "#673F69" }} text="white">
                             <Card.Body>
-                                <Card.Title>ເງິນສົດ</Card.Title>
-                                <Card.Text>{Cashtotal()}</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col xs={4} md={4} className="justify-content-center">
-                        <Card>
-                            <Card.Body>
-                                <Card.Title> ລວມຍອດ</Card.Title>
-                                <Card.Text>{Tranfertotal() + Cashtotal()}</Card.Text>
+                                <Card.Title className="font-content">
+                                    <FontAwesomeIcon icon={faCalculator} className="main-menu" /> ລວມຍອດ | {(Tranfertotal() + Cashtotal()).toLocaleString()} ກີບ
+                                </Card.Title>
                             </Card.Body>
                         </Card>
                     </Col>
                 </Row>
+
             </Container>
         </>
     );
