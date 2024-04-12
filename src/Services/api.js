@@ -69,9 +69,32 @@ export const fetchCarHistory = async ({ sign, note, dateFrom, dateTo }) => {
     }
 };
 
+//============== fetch bill cancel =====================
+
+
+
+export const fetchCancelbill = async ({ sign, note, dateFrom, dateTo }) => {
+    const userId = getUserId();
+    const status = 'CANCEL';
+
+    try {
+        const response = await api.get(`/orders?sign=${sign}&note=${note}&dateFrom=${dateFrom}&dateTo=${dateTo}&status=${status}&userId=${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching car history:', error);
+        throw error;
+    }
+};
+//================== fetch bill cancel  ================
+
+
+
+
 export const fetchOrders = async ({ dateFrom, dateTo, userId }) => {
+    // const userId = getUserId();
+    const status = 'OFFLINE';
     try {
-        const response = await api.get(`/orders?dateFrom=${dateFrom}&dateTo=${dateTo}&userId=${userId}`);
+        const response = await api.get(`/orders?dateFrom=${dateFrom}&dateTo=${dateTo}&userId=${userId}&status=${status}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching orders:', error);
@@ -79,9 +102,12 @@ export const fetchOrders = async ({ dateFrom, dateTo, userId }) => {
     }
 };
 
+
+// fetch car status online
 export const fetchOrder = async (status, sign) => {
+    const userId = getUserId();
     try {
-        const response = await api.get(`/orders?status=${status}&sign=${sign}`);
+        const response = await api.get(`/orders?status=${status}&sign=${sign}&userId=${userId}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching orders:', error);
@@ -89,6 +115,9 @@ export const fetchOrder = async (status, sign) => {
     }
 };
 
+// fetch car status online
+
+//updatestatus
 export const updateOrderStatus = async (id, status, headers) => {
     try {
         const response = await api.put(`/order/${id}`, { status }, { headers });
@@ -98,6 +127,7 @@ export const updateOrderStatus = async (id, status, headers) => {
         throw error;
     }
 };
+//updatestatus
 
 export const fetchReport = async (status, userId) => {
     try {

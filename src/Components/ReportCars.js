@@ -45,7 +45,7 @@ function ReportCars() {//props
                 <hr></hr>
                 <div>
                     <div style={{ display: "flex" }} className='font-content'><span className='font-content' >ລົດຈັກ :</span><p className='font-content'>{datacars.totalBike} ຄັນ </p></div>
-                    <div style={{ display: "flex" }} className='font-content'><span className='font-content' >ລົດຖີບ :</span><p className='font-content'>{datacars.totalCycle} ຄັນ </p></div>
+                    <div style={{ display: "flex" }} className='font-content'><span className='font-content' >vip :</span><p className='font-content'>{datacars.totalCycle} ຄັນ </p></div>
                     <div style={{ display: "flex" }} className='font-content'><span className='font-content' >ລົດໃຫຍ່ :</span><p className='font-content' >{datacars.totalCars} ຄັນ </p></div>
                 </div>
                 <Link as={Link} to="/Checkout">

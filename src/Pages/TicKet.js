@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbarr from '../Components/Navbar';
-import { Button, Col, Container, Row, Form, InputGroup } from 'react-bootstrap';
+import { Button, Col, Container, Row, Form, InputGroup, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { showSuccessAlert } from '../helper/SweetAlert';
 import '../App';
 import QRScanner from '../Components/QRScanner';
 import ReportCars from '../Components/ReportCars';
 import ReportMoney from '../Components/ReportMonney';
+import { faPrint } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Ticket() {
     const [formData, setFormData] = useState({
@@ -14,9 +16,11 @@ function Ticket() {
         note: '',
         money: null,
     });
+
+    const [data, setData] = useState([]);
     const [error, setError] = useState('');
     const [alldata, setAlldata] = useState([]);
-    const [loading, setLoading] = useState(false); // Add loading state
+    const [loading, setLoading] = useState(true); // Initial loading state set to true
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -68,86 +72,118 @@ function Ticket() {
             });
     };
 
-    const data = [
-        { id: 1, carType: "ລົດໃຫຍ່", amount: 10000 },
-        { id: 2, carType: "ລົດຖີບ", amount: 2000 },
-        { id: 3, carType: "ລົດຈັກ", amount: 5000 }
-    ];
+    useEffect(() => {
+        fetchCars();
+    }, []);
+
+
+    const getUserId = () => {
+        return localStorage.getItem('user_id').replace(/^"(.*)"$/, '$1');
+    };
+    const fetchCars = async () => {
+        const userId = getUserId();
+        try {
+            const response = await axios.get(`https://soukphasone.onrender.com/prices?userId=${userId}`);
+            setData(response.data);
+        } catch (error) {
+            console.error('Error fetching cars:', error);
+            setError('Failed to fetch car data. Please try again later.');
+        } finally {
+            // After fetching data, set loading to false
+            setLoading(false);
+        }
+    };
 
     return (
         <>
             <Navbarr />
             <Container style={{ backgroundColor: "#FFAF45", borderRadius: "20px 20px 0 0", }} className='vh-100' >
-                <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0 0 0", textAlign: "center", alignItems: "center" }}>
-                    <div>
-                        <h3 className='page-title' >ໃບບິນລົດ</h3>
-                    </div>
-                    <div> <QRScanner /></div>
-                </div>
+                <Row className="my-3">
+                    <Col md={2} xs={12}></Col>
+                    <Col md={8} xs={12} className="d-flex align-items-center justify-content-between mt-2">
+                        <h3 className="page-title">
+                            <FontAwesomeIcon icon={faPrint} className="mr-2" /> ພິມໃບບິນ
+                        </h3>
+                        <QRScanner />
+                    </Col>
+                    <Col md={2} xs={12}></Col>
+                </Row>
+
 
                 <hr />
+                <Row>
+                    <Col md={2} xs={12} ></Col>
+                    <Col md={8} xs={12} >  <Form>
+                        <Form.Group controlId="name">
+                            <Form.Label className='main-menu'>ທະບຽນລົດ ຫລື ເລກກົງເຕີ</Form.Label>
+                            <Form.Control type="text" name="sign" value={formData.sign} onChange={handleChange} style={{ border: error && !formData.sign.trim() ? '1px solid red' : '' }} />
+                            {error && !formData.sign.trim() && <div style={{ color: 'red' }} className='font-content'>ກະລຸນາ ໃສ່ທະບຽນລົດ ຫລື ເລກກົງເຕີ</div>}
+                        </Form.Group>
 
-                <Form>
-                    <Form.Group controlId="name">
-                        <Form.Label className='main-menu'>ທະບຽນລົດ ຫລື ເລກກົງເຕີ</Form.Label>
-                        <Form.Control type="text" name="sign" value={formData.sign} onChange={handleChange} style={{ border: error && !formData.sign.trim() ? '1px solid red' : '' }} />
-                        {error && !formData.sign.trim() && <div style={{ color: 'red' }} className='font-content'>ກະລຸນາ ໃສ່ທະບຽນລົດ ຫລື ເລກກົງເຕີ</div>}
-                    </Form.Group>
+                        <Form.Group controlId="message">
+                            <Form.Label className='main-menu'>ຫມາຍເຫດ</Form.Label>
+                            <Form.Control as="textarea" name="note" value={formData.note} onChange={handleChange} required />
+                        </Form.Group>
 
-                    <Form.Group controlId="message">
-                        <Form.Label className='main-menu'>ຫມາຍເຫດ</Form.Label>
-                        <Form.Control as="textarea" name="note" value={formData.note} onChange={handleChange} required />
-                    </Form.Group>
+                        <Form.Group>
+                            <Form.Label className='main-menu'>ປະເພດສຳລະ:</Form.Label>
+                            <InputGroup>
+                                <Form.Check
+                                    inline
+                                    type="radio"
+                                    id="cash"
+                                    label="ເງິນສົດ"
+                                    name="paymentMethod"
+                                    value="ເງິນສົດ"
+                                    checked={formData.money === 'ເງິນສົດ'}
+                                    onChange={handlePaymentMethodChange}
+                                    className='main-menu'
+                                />
+                                <Form.Check
+                                    inline
+                                    type="radio"
+                                    id="transfer"
+                                    label="ເງິນໂອນ"
+                                    name="paymentMethod"
+                                    value="ເງິນໂອນ"
+                                    checked={formData.money === 'ເງິນໂອນ'}
+                                    onChange={handlePaymentMethodChange}
+                                    className='main-menu'
+                                />
+                            </InputGroup>
+                        </Form.Group>
+                    </Form>
 
-                    <Form.Group>
-                        <Form.Label className='main-menu'>ປະເພດສຳລະ:</Form.Label>
-                        <InputGroup>
-                            <Form.Check
-                                inline
-                                type="radio"
-                                id="cash"
-                                label="ເງົນສົດ"
-                                name="paymentMethod"
-                                value="cash"
-                                checked={formData.money === 'cash'}
-                                onChange={handlePaymentMethodChange}
-                                className='main-menu'
-                            />
-                            <Form.Check
-                                inline
-                                type="radio"
-                                id="transfer"
-                                label="ເງິນໂອນ"
-                                name="paymentMethod"
-                                value="transfer"
-                                checked={formData.money === 'transfer'}
-                                onChange={handlePaymentMethodChange}
-                                className='main-menu'
-                            />
-                        </InputGroup>
-                    </Form.Group>
-                </Form>
 
-                <hr />
-                <div className="App">
-                    {data.map(item => (
-                        <Button
-                            key={item.id}
-                            onClick={(e) => handleClick(e, item.carType, item.amount)}
-                            disabled={loading}
-                            className='m-1 main-menu'
-                            style={{ backgroundColor: "#FB6D48", border: "none" }}
-                        >
-                            {item.carType}
-                        </Button>
+                        <hr />
+                        <div className="App">
+                            {loading ? (
+                                <Spinner animation="border" variant="primary" />
+                            ) : (
+                                data.length === 0 ? (
+                                    <p>
+                                        <a href="/setting">ກະລຸນາ ຕັ້ງຄ່າລາຄາແລະປະເພດລົດ ທີ່ບ່ອນຕັ້ງຄ່າ</a>
+                                    </p>
+                                ) : (
+                                    data.map(item => (
+                                        <Button
+                                            key={item.id}
+                                            onClick={(e) => handleClick(e, item.carType, item.amount)}
+                                            disabled={loading}
+                                            className='m-1 main-menu'
+                                            style={{ backgroundColor: "#FB6D48", border: "none" }}
+                                        >
+                                            {item.carType}
+                                        </Button>
+                                    ))
+                                )
+                            )}
+                        </div>
+                    </Col>
+                    <Col md={2} xs={12}></Col>
+                </Row>
 
-                    ))}
-                </div>
-                <hr></hr>
-                <div className='pb-3'>
-                    {/* <ReportCars />
-                    <ReportMoney /> */}
-                </div>
+
             </Container>
         </>
     );

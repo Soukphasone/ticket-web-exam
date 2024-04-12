@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Spinner } from 'react-bootstrap';
-import { Container, Row, Col, Form, Table, Button, Card, InputGroup } from 'react-bootstrap';
+import { Modal, Spinner, Form, Table, Button, Card, InputGroup, Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Navbarr from '../Components/Navbar';
-import { fetchOrder, fetchReport, updateOrderStatus } from '../Services/api';
+import { fetchOrder, updateOrderStatus } from '../Services/api';
 import PaginationComponent from '../helper/PaginationComponent';
-import imgNoDaTa from "../asset/image/Animation - 1711077741146.gif"; // Import your image file here
+import imgNoData from "../asset/image/Animation - 1711077741146.gif";
 import NoDataComponent from '../helper/NoDataComponents';
 import Swal from 'sweetalert2';
+import { FaCar, FaCoins } from 'react-icons/fa';
 
 const Checkout = () => {
     const userId = localStorage.getItem('user_id').replace(/^"(.*)"$/, '$1');
+    const token = localStorage.getItem('token').replace(/^"(.*)"$/, '$1');
     const [tableData, setTableData] = useState([]);
-    const [datacars, setDataCars] = useState([]);
     const [sign, setSign] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(30);
     const [loading, setLoading] = useState(true);
+    const [carTypeCount, setCarTypeCount] = useState({});
+    const [sumByType, setSumByType] = useState({ "ເງິນສົດ": 0, "ເງິນໂອນ": 0 });
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     useEffect(() => {
         fetchData();
-        getCars();
     }, [sign]);
 
     const fetchData = async () => {
@@ -32,6 +32,8 @@ const Checkout = () => {
             setLoading(true);
             const orders = await fetchOrder('ONLINE', sign);
             setTableData(orders);
+            calculateCarTypeCount(orders);
+            calculateAmountSumByType(orders);
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -39,66 +41,56 @@ const Checkout = () => {
         }
     };
 
-    const getCars = async () => {
-        try {
-            const report = await fetchReport('ONLINE', userId);
-            setDataCars(report);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const token = localStorage.getItem('token').replace(/^"(.*)"$/, '$1');
-    const headers = {
-        'Authorization': `STORE ${token}`
+    const calculateCarTypeCount = (data) => {
+        const counts = { "ລົດຈັກ": 0, "ລົດໃຫຍ່": 0, "VIP": 0 };
+        data.forEach(item => { counts[item.carType] = (counts[item.carType] || 0) + 1; });
+        const totalCarTypes = Object.values(counts).reduce((acc, curr) => acc + curr, 0);
+        counts["ລວມ"] = totalCarTypes;
+        setCarTypeCount(counts);
     };
 
-    const handleUpdateStatus = async (id) => {
+    const calculateAmountSumByType = (data) => {
+        const sumByType = { "ເງິນສົດ": 0, "ເງິນໂອນ": 0 };
+        data.forEach(item => {
+            const money = item.money;
+            sumByType[money] += parseFloat(item.amount || 0);
+        });
+        const totalSum = Object.values(sumByType).reduce((total, value) => total + value, 0);
+        sumByType["ລວມ"] = totalSum;
+        setSumByType(sumByType);
+    };
+
+    const headers = { 'Authorization': `STORE ${token}` };
+
+    const handleUpdateStatus = async (id, status) => {
         try {
-            await updateOrderStatus(id, 'OFFLINE', headers);
+            await updateOrderStatus(id, status, headers);
             fetchData();
-            getCars();
             setShowConfirmationModal(false);
             setShowSuccessModal(true);
-            setTimeout(() => {
-                setShowSuccessModal(false);
-            }, 1000);
-        } catch (error) {
-            console.log(error);
-        }
+            setTimeout(() => { setShowSuccessModal(false); }, 1000);
+        } catch (error) { console.log(error); }
     }
 
-    const totalVehicles = datacars ? (
-        (datacars.totalCars || 0) + (datacars.totalCycle || 0) + (datacars.totalBike || 0)
-    ) : 0;
+    const handlePageChange = (pageNumber) => { setCurrentPage(pageNumber); }
 
-    const totalPages = Math.ceil(tableData.length / itemsPerPage);
-    const pageNumbers = [];
-
-    for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
-    }
-
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    }
-
-    const showConfirmationDialog = (orderId) => {
+    const showConfirmationDialog = (orderId, status) => {
+        const actionText = status === 'CANCEL' ? 'ຍົກເລີກ ບິນແທ້ບໍ ?' : 'ປ່ອຍລົດ ແທ້ບໍ ?';
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You won\'t be able to revert this!',
+            title: 'ທ່ານ ຕ້ອງການ?',
+            text: actionText,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, update status!'
+            confirmButtonText: 'ຕົກລົງ'
         }).then((result) => {
             if (result.isConfirmed) {
-                handleUpdateStatus(orderId);
+                handleUpdateStatus(orderId, status);
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Your work has been saved",
+                    title: "ດຳເນີນການສຳເລັດ",
                     showConfirmButton: false,
                     timer: 2000
                 });
@@ -106,26 +98,65 @@ const Checkout = () => {
         });
     };
 
-
-    const handleButtonClick = (id) => {
+    const handleButtonClick = (id, status) => {
         setSelectedOrderId(id);
-        showConfirmationDialog(id); // Call the function to show the confirmation dialog
+        showConfirmationDialog(id, status);
     };
 
     return (
         <>
-            {/* Navbar component */}
             <Navbarr />
-            <Container className='con-checkout' style={{ backgroundColor: "#FFAF45", borderRadius: "20px 20px 0 0", height: "100%" }} >
-                {/* Container for the checkout section */}
-                <Row>
+            <Container className='con-checkout' style={{ backgroundColor: "#FFAF45", borderRadius: "20px 20px 0 0", height: "100%" }}>
+                <Row className="my-4">
                     <Col>
-                        <h3 className='page-title'>ລົດໃນຄອກຂະນະນີ້</h3>
+                        <div className="title-container">
+                            <h3 className="page-title">ລົດໃນຄອກຂະນະນີ້</h3>
+                        </div>
                     </Col>
                 </Row>
-                <br />
-                <Row>
-                    <Col xs={12} md={3}>
+                {loading ? (
+                    <div className="text-center mt-5">
+                        <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                    </div>
+                ) : (
+                    <Row>
+                        <Col md={6} xs={12}>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title" style={{ color: "#FFAF45" }}>  <FaCar size={32} style={{ margin: "0rem 1rem 0rem 1rem", }} />ປະເພດລົດ </h5>
+                                    <ul className="list-group list-group-flush">
+                                        {Object.keys(carTypeCount).map((carType, index) => (
+                                            <li key={carType} className="list-group-item d-flex justify-content-between align-items-center">
+                                                <strong>{carType}</strong>
+                                                <span className="badge bg-primary rounded-pill">ຈຳນວນ : {carTypeCount[carType]} ຄັນ </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </Col>
+                        <Col md={6} xs={12}>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title" style={{ marginBottom: "1.6rem", color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> ຈຳນວນເງິນ</h5>
+                                    <br></br>
+                                    <ul className="list-group list-group-flush">
+                                        {Object.entries(sumByType).map(([type, sum]) => (
+                                            <li key={type} className="list-group-item d-flex justify-content-between align-items-center">
+                                                <strong>{type}</strong>
+                                                <span className="badge bg-primary rounded-pill">ຈຳນວນ : {sum.toLocaleString()} ກີບ  </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                )}
+                <Row className='mb-2 mt-2'>
+                    <Col xs={12} md={6}>
                         <Form>
                             <Form.Group>
                                 <InputGroup>
@@ -136,43 +167,6 @@ const Checkout = () => {
                         </Form>
                     </Col>
                 </Row>
-                <br />
-                {/* Cards displaying vehicle counts */}
-                <Row>
-                    <Col xs={6} md={3} className="justify-content-center pb-4">
-                        <Card style={{ backgroundColor: 'white' }}>
-                            <Card.Body style={{ textAlign: 'center' }}>
-                                <Card.Title className='main-menu'>ຈຳນວນລົດຖີບ :</Card.Title>
-                                <Card.Text className='font-content'>{datacars.totalCycle || 0}</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col xs={6} md={3} className="justify-content-center">
-                        <Card style={{ backgroundColor: 'white' }}>
-                            <Card.Body style={{ textAlign: 'center' }}>
-                                <Card.Title className='main-menu'>ຈຳນວນລົດຈັກ :</Card.Title>
-                                <Card.Text className='font-content'>{datacars.totalBike || 0}</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col xs={6} md={3} className="justify-content-center">
-                        <Card style={{ backgroundColor: 'white' }}>
-                            <Card.Body style={{ textAlign: 'center' }}>
-                                <Card.Title className='main-menu'> ຈຳນວນລົດໃຫຍ່ :</Card.Title>
-                                <Card.Text className='font-content'>{datacars.totalCars || 0}</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col xs={6} md={3} className="justify-content-center">
-                        <Card style={{ backgroundColor: 'white' }}>
-                            <Card.Body style={{ textAlign: 'center' }}>
-                                <Card.Title className='main-menu'> ຈຳນວນທັງໝົດ :</Card.Title>
-                                <Card.Text className='font-content'>{totalVehicles}</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-                <br />
                 <Row>
                     <Col>
                         <Table striped bordered hover responsive className='main-menu'>
@@ -184,11 +178,9 @@ const Checkout = () => {
                                     <th>ລາຄາ</th>
                                     <th>ປະເພດສຳລະ</th>
                                     <th>ຫມາຍເຫດ</th>
-                                    <th style={{ textAlign: "center" }}>ສະຖານະ</th>
+                                    <th >ສະຖານະ</th>
                                 </tr>
                             </thead>
-
-                            {/* Conditional rendering of table data or loading/spinner */}
                             <tbody className='font-content'>
                                 {loading ? (
                                     <tr>
@@ -198,39 +190,29 @@ const Checkout = () => {
                                     </tr>
                                 ) : tableData
                                     .filter(item => item.userId === userId)
-                                    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                                    .slice((currentPage - 1) * 30, currentPage * 30)
                                     .length === 0 ? (
                                     <tr>
                                         <td colSpan="7" style={{ textAlign: "center" }}>
-                                            <div
-                                                style={{
-                                                    fontSize: "18px",
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    justifyContent: "center",
-                                                    alignItems: "center",
-                                                    color: "#6B7280",
-                                                    fontWeight: "400",
-                                                }}>
-                                                {/* Display when no data */}
-                                                <NoDataComponent imgSrc={imgNoDaTa} altText="Sidebar Icon" /> ບໍ່ມີຂໍ້ມູນ</div>
+                                            <div style={{ fontSize: "18px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", color: "#6B7280", fontWeight: "400" }}>
+                                                <NoDataComponent imgSrc={imgNoData} altText="No Data" /> ບໍ່ມີຂໍ້ມູນ</div>
                                         </td>
                                     </tr>
                                 ) : (
-                                    // Render table rows
                                     tableData
                                         .filter(item => item.userId === userId)
-                                        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                                        .slice((currentPage - 1) * 30, currentPage * 30)
                                         .map((item, index) => (
-                                            <tr key={item._id} onClick={() => handleButtonClick(item._id)}>
+                                            <tr key={item._id}>
                                                 <td>{index + 1}</td>
                                                 <td>{item.sign}</td>
                                                 <td>{item.carType}</td>
-                                                <td>{item.amount ? item.amount.toLocaleString() : '-'}</td> {/* Add conditional check */}
+                                                <td>{item.amount ? item.amount.toLocaleString() : '-'}</td>
                                                 <td>{item.money}</td>
                                                 <td>{item.note}</td>
                                                 <td>
-                                                    <button style={{ backgroundColor: "#FB6D48", color: "white", border: "none", borderRadius: "5px" }}>{item.status}</button>
+                                                    <button style={{ backgroundColor: "red", color: "white", border: "none", borderRadius: "5px", marginRight: "5px" }} onClick={() => handleButtonClick(item._id, 'CANCEL')}>ຍົກເລີກບິນ</button>
+                                                    <button style={{ backgroundColor: "green", color: "white", border: "none", borderRadius: "5px" }} onClick={() => handleButtonClick(item._id, 'OFFLINE')}>ປ່ອຍລົດອອກ</button>
                                                 </td>
                                             </tr>
                                         ))
@@ -238,18 +220,14 @@ const Checkout = () => {
                             </tbody>
                         </Table>
                         <br />
-                        {/* Pagination component */}
                         <PaginationComponent
                             currentPage={currentPage}
-                            totalPages={totalPages}
+                            totalPages={Math.ceil(tableData.length / 30)}
                             handlePageChange={handlePageChange}
                         />
                     </Col>
                 </Row>
-            </Container >
-
-            {/* Success Modal */}
-
+            </Container>
         </>
     );
 }

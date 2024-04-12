@@ -6,11 +6,13 @@ import Checkout from '../Pages/Checkout';
 import CarHistory from '../Pages/CarHistory';
 import BalanceHistoryForm from '../Pages/BanlanceHistory';
 import Setting from '../Pages/Setting';
-import DisplayData from '../Pages/DisplayData';
+
 import Adddata from '../Components/AddDataComponen';
 import Ticket from '../Pages/TicKet';
 import QRScanner from '../Components/QRScanner';
 import ConfirmScanner from '../Pages/ConfirmScanner';
+import CancelBill from '../Pages/CancelBill';
+import Hitcounter from '../Components/HitCounter';
 
 
 
@@ -48,9 +50,11 @@ function Router() {
                     <Route path="/Carhistory" element={isLoggedIn ? <CarHistory /> : <Navigate to="/" />} />
                     <Route path="/moneyhistory" element={isLoggedIn ? <BalanceHistoryForm /> : <Navigate to="/" />} />
                     <Route path="/setting" element={isLoggedIn ? <Setting /> : <Navigate to="/" />} />
-                    <Route path="/displaydata" element={isLoggedIn ? <DisplayData /> : <Navigate to="/" />} />
-                    <Route path="/adddata" element={isLoggedIn ? <Adddata /> : <Navigate to="/" />} />
 
+                    <Route path="/adddata" element={isLoggedIn ? <Adddata /> : <Navigate to="/" />} />
+                    <Route path="/topconsumer" element={isLoggedIn ? <Hitcounter /> : <Navigate to="/" />} />
+
+                    <Route path="/cancelbill" element={isLoggedIn ? <CancelBill /> : <Navigate to="/" />} />
                     <Route path="/confirmscanner" element={isLoggedIn ? <ConfirmScanner /> : <Navigate to="/" />} />
 
 
