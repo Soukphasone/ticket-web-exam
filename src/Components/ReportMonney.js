@@ -30,7 +30,7 @@ function ReportMoney({ children }) {
             .filter(
                 (item) =>
                     item.createdAt.startsWith(currentDate) &&
-                    item.money === "cash" &&
+                    item.money === "ເງົນສົດ" &&
                     item.userId === userId
             )
             .reduce((total, item) => (total += item.amount), 0);
@@ -42,7 +42,7 @@ function ReportMoney({ children }) {
             .filter(
                 (item) =>
                     item.createdAt.startsWith(currentDate) &&
-                    item.money === "transfer" &&
+                    item.money === "ເງິນໂອນ" &&
                     item.userId === userId
             )
             .reduce((total, item) => (total += item.amount), 0);

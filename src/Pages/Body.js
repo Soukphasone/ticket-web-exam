@@ -1,67 +1,72 @@
-import React, { useState } from 'react';
-import ReportMoney from '../Components/ReportMonney';
-import ReportCars from '../Components/ReportCars';
+import { Nav } from 'react-bootstrap';
 import Footer from '../Components/Footer';
 import '../App.css';
-import Bicycle from '../Components/FormBicycle';
-import Cars from '../Components/Formcars';
-import Motocycle from '../Components/FormMotocycle';
-import { Row, Col, Container, Breadcrumb } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { Row, Col, Container } from 'react-bootstrap';
 import Navbarr from '../Components/Navbar';
-import { fetchData } from '../Services/api';
-import MotionContainer from '../helper/MotionContainer'; // Import the MotionContainer component
-import { Link, useNavigate } from 'react-router-dom';
-
-
+import { FaCar, FaDollarSign, FaUser, FaTimesCircle } from 'react-icons/fa';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 function Body() {
-    const [datacars, setDataCars] = useState([]);
-
-
-    const _fetchData = async () => {
-        try {
-            const data = await fetchData('ONLINE');
-            setDataCars(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     return (
         <>
             <Navbarr />
-
-            <MotionContainer> {/* Use MotionContainer here */}
-                <Container style={{ height: "100%" }}>
-                    {/* <Breadcrumb>
-                        <Breadcrumb.Item href='/'>ຫນ້າຫລັກ</Breadcrumb.Item>
-                        <Breadcrumb.Item href='/Checkout'>ລົດໃນຄອກຂະນະນີ້ </Breadcrumb.Item>
-                        <Breadcrumb.Item href="/Carhistory">ປະຫວັດລົດເຂົ້າ-ອອກ</Breadcrumb.Item>
-                        <Breadcrumb.Item href="/moneyhistory">ປະຫວັດຍອດເງິນ</Breadcrumb.Item>
-                    </Breadcrumb> */}
-                    <div className='top-title'>
-                        <h3 className='page-title'>ລະບົບຈັດການປີ້ລົດ</h3>
-                        <hr></hr>
-                    </div>
-                    {/* 
-                    <div className='container-cars'>
-                        <Cars fetchData={_fetchData} />
-                        <Motocycle fetchData={_fetchData} />
-                        <Bicycle fetchData={_fetchData} />
-                    </div> */}
-
+            <div>
+                <Container className='vh-100' style={{ backgroundColor: "#ffaf45", borderRadius: "20px 20px 0 0" }}>
+                    <br />
                     <Row className='justify-content-center'>
-                        <Col xs={12} md={4}>
-                            <ReportMoney />
+                        <Col xs={12} md={6} className='mb-md-2'>
+                            <Nav>
+                                <Nav.Link href="/Carhistory" className='card-report d-flex justify-content-between align-items-center'>
+                                    <div>
+                                        <FaCar className='icon-report' /> ລາຍງານ ປະຫວັດລົດເຂົ້າ-ອອກ
+                                        <br />
+                                        <span className='card-report-child'>ປະຫວັດລົດເຂົ້າ-ອອກ</span>
+                                    </div>
+                                    <ArrowForwardIosIcon />
+                                </Nav.Link>
+                            </Nav>
                         </Col>
-                        <Col xs={12} md={4}>
-                            <ReportCars />
+                        <Col xs={12} md={6} className='mb-md-2'>
+                            <Nav>
+                                <Nav.Link href="/moneyhistory" className='card-report d-flex justify-content-between align-items-center'>
+                                    <div>
+                                        <FaDollarSign className='icon-report' /> ລາຍງານ ປະຫວັດຍອດເງິນ
+                                        <br />
+                                        <span className='card-report-child'>ຍອດເງິນ</span>
+                                    </div>
+                                    <ArrowForwardIosIcon />
+                                </Nav.Link>
+                            </Nav>
                         </Col>
                     </Row>
-                    <br></br>
+                    <Row className='justify-content-center'>
+                        <Col xs={12} md={6} className='mb-md-2'>
+                            <Nav>
+                                <Nav.Link href="/topconsumer" className='card-report d-flex justify-content-between align-items-center'>
+                                    <div>
+                                        <FaUser className='icon-report' /> ລາຍງານ ລູກຄ້າປະຈຳ
+                                        <br />
+                                        <span className='card-report-child'>ຈັດອັນດັບລູກຄ້າປະຈຳ</span>
+                                    </div>
+                                    <ArrowForwardIosIcon />
+                                </Nav.Link>
+                            </Nav>
+                        </Col>
+                        <Col xs={12} md={6} className='mb-md-2'>
+                            <Nav>
+                                <Nav.Link href="/cancelbill" className='card-report d-flex justify-content-between align-items-center'>
+                                    <div>
+                                        <FaTimesCircle className='icon-report' /> ລາຍງານ ບິນຍົກເລີກ
+                                        <br />
+                                        <span className='card-report-child'>ບິນຍົກເລີກ</span>
+                                    </div>
+                                    <ArrowForwardIosIcon />
+                                </Nav.Link>
+                            </Nav>
+                        </Col>
+                    </Row>
                 </Container>
-            </MotionContainer>
+            </div>
             <Footer />
         </>
     );

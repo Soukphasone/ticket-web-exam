@@ -3,6 +3,84 @@
 
 }
 
+.nav-link- {
+    position: relative;
+    color: #000;
+    /* Set your desired text color */
+    text-decoration: none;
+}
+
+.nav-link-:hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    /* Adjust the thickness of the underline */
+    width: 100%;
+    height: 2px;
+    /* Adjust the height of the underline */
+    background-color: #FB6D48;
+    /* Set your desired underline color */
+}
+
+
+/* Styles for the modal content */
+.time-range-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.time-range-button {
+    background-color: #5f82e6;
+    /* Blue */
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 6px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.time-range-button:hover {
+    background-color: #4763c2;
+    transform: translateY(-2px);
+}
+
+/* Modal header style */
+.modal-header {
+    background-color: #5f82e6;
+    color: white;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Close button style */
+.modal-header .close {
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* Modal body style */
+.modal-body {
+    padding: 20px;
+}
+
+/* Modal footer style (if needed) */
+.modal-footer {
+    border-top: none;
+}
+
+
+
+
 .camera-button {
     background-color: #FB6D48;
     border: none;
@@ -10,6 +88,93 @@
     border-radius: 100%;
 
 
+}
+
+
+.hit-counter-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.hit-counter-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.hit-counter-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.hit-counter-table th,
+.hit-counter-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.hit-counter-table th {
+    background-color: #f2f2f2;
+}
+
+.hit-counter-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.hit-counter-table tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+
+
+
+.action-button {
+    background-color: transparent;
+    /* color: white; */
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button {
+    background-color: red;
+    margin-right: 5px;
+    color: white;
+}
+
+.offline-button {
+    background-color: green;
+    color: white;
+}
+
+.action-button:hover {
+    /* background-color: rgba(255, 255, 255, 0.2); */
+}
+
+
+.card-report {
+    font-size: large;
+    background-color: white;
+    box-shadow: none;
+    width: 100%;
+    color: black;
+
+}
+
+.card-report-child {
+    font-size: smaller;
+    color: gray;
+    margin-left: 2rem;
+
+}
+
+.icon-report {
+    color: #FB6D48;
+    margin-right: 5px;
+    font-size: larger;
 }
 
 .camera-button .icon {
@@ -26,7 +191,7 @@ h1 {
 }
 
 .top-title {
-    text-align: center;
+
     padding: 10px;
 }
 
@@ -76,6 +241,7 @@ footer {
     .font-content {
         font-size: 13px;
         /* Adjust the font size as per your requirement */
+
     }
 
     .page-title {
@@ -88,6 +254,7 @@ footer {
 
     .main-menu {
         font-size: 14px;
+
     }
 
     .navbar {
@@ -351,5 +518,20 @@ footer {
 
     .horizontal-menu {
         overflow-x: auto;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .main-menu th,
+    .main-menu td {
+        padding: 8px;
+        /* Adjust padding */
+        font-size: 14px;
+        /* Adjust font size */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
     }
 }

@@ -10,6 +10,7 @@ import ".././App.css"
 
 const BalanceHistoryForm = (props) => {
     const [data, setData] = useState([]);
+    console.log("data", data)
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
     const [userId, setUserId] = useState("");
@@ -40,13 +41,13 @@ const BalanceHistoryForm = (props) => {
 
     const Cashtotal = () => {
         return data
-            .filter((item) => item.money === "cash" && !isNaN(item.amount))
+            .filter((item) => item.money === "ເງິນສົດ" && !isNaN(item.amount))
             .reduce((total, item) => (total += parseFloat(item.amount)), 0);
     };
 
     const Tranfertotal = () => {
         return data
-            .filter((item) => item.money === "transfer" && !isNaN(item.amount))
+            .filter((item) => item.money === "ເງິນໂອນ" && !isNaN(item.amount))
             .reduce((total, item) => (total += parseFloat(item.amount)), 0);
     };
 
@@ -63,19 +64,20 @@ const BalanceHistoryForm = (props) => {
                         <h3 className="page-title">ປະຫວັດຍອດເງິນ</h3>
                     </Col>
                 </Row>
-                <br></br>
+                <hr></hr>
                 <Row>
-                    <Col md={5} xs={5} style={{ padding: "0px 0px 0px 12px" }}>
+                    <Col md={2} xs={5} >
                         <Form>
+                            <Form.Label>ແຕ່ວັນທີ</Form.Label>
                             <Form.Group>
                                 <Form.Control type="date" onChange={(e) => setDateFrom(e.target.value)} />
                             </Form.Group>
                         </Form>
                     </Col>
-                    <Col md={2} xs={2} style={{ padding: "0px" }}><FontAwesomeIcon icon={faArrowRight} size="2xl" style={{ width: "100%", color: 'white' }} /></Col>
-
-                    <Col md={5} xs={5} style={{ padding: "0px 12px 0px 0px" }}>
+                    {/* <Col md={2} xs={2} style={{ padding: "0px" }}><FontAwesomeIcon icon={faArrowRight} size="2xl" style={{ width: "100%", color: 'white' }} /></Col> */}
+                    <Col md={2} xs={5}>
                         <Form>
+                            <Form.Label>ຫາວັນທີ</Form.Label>
                             <Form.Group>
                                 <Form.Control type="date" onChange={(e) => setDateTo(e.target.value)} />
                             </Form.Group>
@@ -110,7 +112,6 @@ const BalanceHistoryForm = (props) => {
                         </Card>
                     </Col>
                 </Row>
-
             </Container>
         </>
     );
