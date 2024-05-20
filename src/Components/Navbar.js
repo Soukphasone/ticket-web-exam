@@ -76,17 +76,17 @@ function Navbarr() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
 
-                            {isLoggedIn && (<Nav.Link as={Link} to="/" className='nav-link-'>ພິມໃບບິນ</Nav.Link>)}
-                            {isLoggedIn && (<Nav.Link as={Link} to="/Checkout" className='nav-link-'>ລົດໃນຄອກຂະນະນີ້</Nav.Link>)}
-                            {isLoggedIn && (<Nav.Link as={Link} to="/report" className='nav-link-'>ລາຍງານ</Nav.Link>)}
-                            {isLoggedIn && (<Nav.Link as={Link} to="/setting" className='nav-link-'>ຕັ້ງຄ່າ</Nav.Link>)}
+                            {isLoggedIn && (<Nav.Link as={Link} to="/" className='nav-link-'>In hóa đơn </Nav.Link>)}
+                            {isLoggedIn && (<Nav.Link as={Link} to="/Checkout" className='nav-link-'>Xe ở bãi đậu</Nav.Link>)}
+                            {isLoggedIn && (<Nav.Link as={Link} to="/report" className='nav-link-'>Thông kê </Nav.Link>)}
+                            {isLoggedIn && (<Nav.Link as={Link} to="/setting" className='nav-link-'>Cái đặt</Nav.Link>)}
                         </Nav>
                         <Navbar.Collapse className="justify-content-end">
                             <Nav>
                                 <NavDropdown style={{ color: "#D74B76", marginRight: "6rem" }} id="nav-dropdown-dark-example" title={text_username} menuVariant="light">
                                     {isLoggedIn && (
                                         <NavDropdown.Item onClick={handleLogout} style={{ color: "#E53E3E", fontWeight: "bold" }}>
-                                            ອອກຈາກລະບົບ <FontAwesomeIcon icon={faPowerOff} style={{ color: "#E53E3E", marginLeft: "5px" }} />
+                                            đăng xuất <FontAwesomeIcon icon={faPowerOff} style={{ color: "#E53E3E", marginLeft: "5px" }} />
                                         </NavDropdown.Item>
                                     )}
                                 </NavDropdown>

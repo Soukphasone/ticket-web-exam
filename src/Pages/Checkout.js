@@ -42,21 +42,21 @@ const Checkout = () => {
     };
 
     const calculateCarTypeCount = (data) => {
-        const counts = { "ລົດຈັກ": 0, "ລົດໃຫຍ່": 0, "VIP": 0 };
+        const counts = { "Xe máy": 0, "Xe ô tô": 0, "VIP": 0 };
         data.forEach(item => { counts[item.carType] = (counts[item.carType] || 0) + 1; });
         const totalCarTypes = Object.values(counts).reduce((acc, curr) => acc + curr, 0);
-        counts["ລວມ"] = totalCarTypes;
+        counts["Tổng"] = totalCarTypes;
         setCarTypeCount(counts);
     };
 
     const calculateAmountSumByType = (data) => {
-        const sumByType = { "ເງິນສົດ": 0, "ເງິນໂອນ": 0 };
+        const sumByType = { "Tiền mặt": 0, "Chuyên khoản": 0 };
         data.forEach(item => {
             const money = item.money;
             sumByType[money] += parseFloat(item.amount || 0);
         });
         const totalSum = Object.values(sumByType).reduce((total, value) => total + value, 0);
-        sumByType["ລວມ"] = totalSum;
+        sumByType["Tổng"] = totalSum;
         setSumByType(sumByType);
     };
 
@@ -110,7 +110,7 @@ const Checkout = () => {
                 <Row className="my-4">
                     <Col>
                         <div className="title-container">
-                            <h3 className="page-title">ລົດໃນຄອກຂະນະນີ້</h3>
+                            <h3 className="page-title">Xe trong bãi đậu</h3>
                         </div>
                     </Col>
                 </Row>
@@ -125,12 +125,12 @@ const Checkout = () => {
                         <Col md={6} xs={12}>
                             <div className="card">
                                 <div className="card-body">
-                                    <h5 className="card-title" style={{ color: "#FFAF45" }}>  <FaCar size={32} style={{ margin: "0rem 1rem 0rem 1rem", }} />ປະເພດລົດ </h5>
+                                    <h5 className="card-title" style={{ color: "#FFAF45" }}>  <FaCar size={32} style={{ margin: "0rem 1rem 0rem 1rem", }} />Loại xe </h5>
                                     <ul className="list-group list-group-flush">
                                         {Object.keys(carTypeCount).map((carType, index) => (
                                             <li key={carType} className="list-group-item d-flex justify-content-between align-items-center">
                                                 <strong>{carType}</strong>
-                                                <span className="badge bg-primary rounded-pill">ຈຳນວນ : {carTypeCount[carType]} ຄັນ </span>
+                                                <span className="badge bg-primary rounded-pill">số lượng : {carTypeCount[carType]} xe </span>
                                             </li>
                                         ))}
                                     </ul>
@@ -140,13 +140,13 @@ const Checkout = () => {
                         <Col md={6} xs={12}>
                             <div className="card">
                                 <div className="card-body">
-                                    <h5 className="card-title" style={{ marginBottom: "1.6rem", color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> ຈຳນວນເງິນ</h5>
+                                    <h5 className="card-title" style={{ marginBottom: "1.6rem", color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> Số tiền </h5>
                                     <br></br>
                                     <ul className="list-group list-group-flush">
                                         {Object.entries(sumByType).map(([type, sum]) => (
                                             <li key={type} className="list-group-item d-flex justify-content-between align-items-center">
                                                 <strong>{type}</strong>
-                                                <span className="badge bg-primary rounded-pill">ຈຳນວນ : {sum.toLocaleString()} ກີບ  </span>
+                                                <span className="badge bg-primary rounded-pill">Số lượng : {sum.toLocaleString()} đ  </span>
                                             </li>
                                         ))}
                                     </ul>
@@ -161,7 +161,7 @@ const Checkout = () => {
                             <Form.Group>
                                 <InputGroup>
                                     <InputGroup.Text id="basic-addon1" style={{ backgroundColor: "white" }}><FontAwesomeIcon icon={faMagnifyingGlass} /></InputGroup.Text>
-                                    <Form.Control type="text" placeholder='ຄົ້ນຫາທະບຽນ/ກົງເຕີ' onChange={(e) => setSign(e.target.value)} />
+                                    <Form.Control type="text" placeholder='Tìm kiếm số biển / công tơ mét xe' onChange={(e) => setSign(e.target.value)} />
                                 </InputGroup>
                             </Form.Group>
                         </Form>
@@ -173,12 +173,12 @@ const Checkout = () => {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>ທະບຽນ/ເລກກົງເຕີ</th>
-                                    <th>ປະເພດ</th>
-                                    <th>ລາຄາ</th>
-                                    <th>ປະເພດສຳລະ</th>
-                                    <th>ຫມາຍເຫດ</th>
-                                    <th >ສະຖານະ</th>
+                                    <th>Số biến xe/Công tơ mét xe</th>
+                                    <th>loại xe </th>
+                                    <th>đơn giá </th>
+                                    <th>Thanh toán </th>
+                                    <th>Ghi chú</th>
+                                    <th >Trạng thái </th>
                                 </tr>
                             </thead>
                             <tbody className='font-content'>
@@ -195,7 +195,7 @@ const Checkout = () => {
                                     <tr>
                                         <td colSpan="7" style={{ textAlign: "center" }}>
                                             <div style={{ fontSize: "18px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", color: "#6B7280", fontWeight: "400" }}>
-                                                <NoDataComponent imgSrc={imgNoData} altText="No Data" /> ບໍ່ມີຂໍ້ມູນ</div>
+                                                <NoDataComponent imgSrc={imgNoData} altText="No Data" /> Không có dữ liệu</div>
                                         </td>
                                     </tr>
                                 ) : (

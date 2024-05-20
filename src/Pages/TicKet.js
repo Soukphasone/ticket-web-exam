@@ -102,7 +102,7 @@ function Ticket() {
                     <Col md={2} xs={12}></Col>
                     <Col md={8} xs={12} className="d-flex align-items-center justify-content-between mt-2">
                         <h3 className="page-title">
-                            <FontAwesomeIcon icon={faPrint} className="mr-2" /> ພິມໃບບິນ
+                            <FontAwesomeIcon icon={faPrint} className="mr-2" /> in hóa đơn
                         </h3>
                         <QRScanner />
                     </Col>
@@ -115,27 +115,27 @@ function Ticket() {
                     <Col md={2} xs={12} ></Col>
                     <Col md={8} xs={12} >  <Form>
                         <Form.Group controlId="name">
-                            <Form.Label className='main-menu'>ທະບຽນລົດ ຫລື ເລກກົງເຕີ</Form.Label>
+                            <Form.Label className='main-menu'>Biển số xe / Công tác mét xe</Form.Label>
                             <Form.Control type="text" name="sign" value={formData.sign} onChange={handleChange} style={{ border: error && !formData.sign.trim() ? '1px solid red' : '' }} />
                             {error && !formData.sign.trim() && <div style={{ color: 'red' }} className='font-content'>ກະລຸນາ ໃສ່ທະບຽນລົດ ຫລື ເລກກົງເຕີ</div>}
                         </Form.Group>
 
                         <Form.Group controlId="message">
-                            <Form.Label className='main-menu'>ຫມາຍເຫດ</Form.Label>
+                            <Form.Label className='main-menu'>Ghi chú</Form.Label>
                             <Form.Control as="textarea" name="note" value={formData.note} onChange={handleChange} required />
                         </Form.Group>
 
                         <Form.Group>
-                            <Form.Label className='main-menu'>ປະເພດສຳລະ:</Form.Label>
+                            <Form.Label className='main-menu'>thanh toán:</Form.Label>
                             <InputGroup>
                                 <Form.Check
                                     inline
                                     type="radio"
                                     id="cash"
-                                    label="ເງິນສົດ"
+                                    label="Tiền mặt"
                                     name="paymentMethod"
-                                    value="ເງິນສົດ"
-                                    checked={formData.money === 'ເງິນສົດ'}
+                                    value="Tiền mặt"
+                                    checked={formData.money === 'Tiền mặt'}
                                     onChange={handlePaymentMethodChange}
                                     className='main-menu'
                                 />
@@ -143,10 +143,10 @@ function Ticket() {
                                     inline
                                     type="radio"
                                     id="transfer"
-                                    label="ເງິນໂອນ"
+                                    label="Chuyên khoản"
                                     name="paymentMethod"
-                                    value="ເງິນໂອນ"
-                                    checked={formData.money === 'ເງິນໂອນ'}
+                                    value="Chuyên khoản"
+                                    checked={formData.money === 'Chuyên khoản'}
                                     onChange={handlePaymentMethodChange}
                                     className='main-menu'
                                 />
@@ -162,7 +162,7 @@ function Ticket() {
                             ) : (
                                 data.length === 0 ? (
                                     <p>
-                                        <a href="/setting">ກະລຸນາ ຕັ້ງຄ່າລາຄາແລະປະເພດລົດ ທີ່ບ່ອນຕັ້ງຄ່າ</a>
+                                        <a href="/setting">Vui lòng , đặt giá và loại</a>
                                     </p>
                                 ) : (
                                     data.map(item => (

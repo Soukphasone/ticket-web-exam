@@ -68,7 +68,7 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn }) => {
                                                     fontWeight: 800 // Make text even more bold
 
                                                 }}>
-                                                    ເຂົ້າສູ່ລະບົບ
+                                                    Đăng nhập
                                                 </h2>
 
                                             </div>
@@ -77,7 +77,7 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn }) => {
                                                     <span className="input-group-text" style={{ backgroundColor: "transparent", }}>
                                                         <FontAwesomeIcon icon={faUser} style={{ color: "#FB6D48" }} />
                                                     </span>
-                                                    <input type="text" id="name" className="form-control form-control-md" placeholder='ໃສ່ຊື່ບັນຊີ' value={name}
+                                                    <input type="text" id="name" className="form-control form-control-md" placeholder='Nhập tài khoản' value={name}
                                                         onChange={(e) => setName(e.target.value)} />
                                                 </div>
                                             </div>
@@ -86,7 +86,7 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn }) => {
                                                     <span className="input-group-text" style={{ backgroundColor: "transparent", }}>
                                                         <FontAwesomeIcon icon={faLock} style={{ color: "#FB6D48" }} />
                                                     </span>
-                                                    <input type={showPassword ? "text" : "password"} id="password" className="form-control form-control-md" placeholder='ໃສ່ລະຫັດຜ່ານ' value={password}
+                                                    <input type={showPassword ? "text" : "password"} id="password" className="form-control form-control-md" placeholder='Nhập mật khẩu' value={password}
                                                         onChange={(e) => setPassword(e.target.value)} />
                                                     <span className="input-group-text" style={{ cursor: 'pointer' }} onClick={togglePasswordVisibility}>
                                                         <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} style={{ color: "#FB6D48" }} />
@@ -96,7 +96,7 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn }) => {
                                             {error && <div style={{ color: 'red' }}>{error}</div>}
                                             <div className="pt-1 mb-4" style={{ display: "flex", textAlign: "center", justifyContent: "end", }}>
                                                 <button className="btn btn-md btn-block" type="submit" style={{ backgroundColor: "#FB6D48", color: 'white', width: "100%", boxShadow: " 5px 5px 5px #888888", display: "flex", justifyContent: "center" }}>
-                                                    {loading ? <Loading /> : 'ຕົກລົງ'}
+                                                    {loading ? <Loading /> : 'đông ý '}
                                                 </button>
                                             </div>
                                         </form>
