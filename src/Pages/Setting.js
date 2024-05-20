@@ -154,7 +154,7 @@ function Setting() {
             <Container className='vh-100' style={{ backgroundColor: "#FFAF45", borderRadius: "20px 20px 0 0" }}>
                 <Row>
                     <Col>
-                        <h3 className='mt-4 page-title'>ຕັ້ງຄ່າລາຄາລົດແຕ່ລະປະເພດ</h3>
+                        <h3 className='mt-4 page-title'>Đặt giá từng loại xe</h3>
                     </Col>
                 </Row>
                 <br></br>
@@ -164,7 +164,7 @@ function Setting() {
                         <Row>
                             <Col>
                                 <Button variant="primary" onClick={handleShow} className='main-menu' style={{ backgroundColor: "#FB6D48", color: "white", border: "none" }}>
-                                    + ຕັ້ງຄ່າລາຄາ
+                                    + Đặt giá
                                 </Button>
                             </Col>
                         </Row>
@@ -173,10 +173,10 @@ function Setting() {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>ປະເພດລົດ</th>
-                                    <th>ລາຄາ</th>
-                                    <th>ເພີ່ມເຕີມ</th>
-                                    <th>ຈັດການ</th>
+                                    <th>Loại xe</th>
+                                    <th>đơn giá </th>
+                                    <th>Ghi chú</th>
+                                    <th>Quản lý</th>
                                 </tr>
                             </thead>
                             <tbody className='font-content'>
@@ -189,7 +189,7 @@ function Setting() {
                                 ) : cars.length === 0 ? (
                                     <tr>
                                         <td colSpan="5" style={{ textAlign: "center" }}>
-                                            ບໍ່ທັນມີຂໍ້ມູນ ກະລຸນາ ຕັ້ງຄ່າລາຄາກ່ອນ
+                                            Không dữ liệu , vui lòng đặt giá đã
                                         </td>
                                     </tr>
                                 ) : (
@@ -203,7 +203,7 @@ function Setting() {
                                                 <OverlayTrigger
                                                     key={`edit-tooltip-${index}`}
                                                     placement="top"
-                                                    overlay={<Tooltip id={`tooltip-edit-${index}`}>ແກ້ໄຂ</Tooltip>}
+                                                    overlay={<Tooltip id={`tooltip-edit-${index}`}>Xử lý</Tooltip>}
                                                 >
                                                     <Button variant="info" className='main-menu' onClick={() => handleEdit(car._id)} style={{ padding: "2px" }}>
                                                         <Edit style={{ color: "white" }} />
@@ -235,17 +235,17 @@ function Setting() {
                     <Modal.Body>
                         <Form>
                             <Form.Select aria-label="Default select example" onChange={handleCarTypeChange} value={carType} className='main-menu' style={{ border: error && !carType ? '1px solid red' : '' }}>
-                                <option className='font-content'>ເລືອກປະເພດລົດ</option>
-                                <option className='font-content' value="ລົດຈັກ">ລົດຈັກ</option>
-                                <option className='font-content' value="ລົດໃຫຍ່">ລົດໃຫຍ່</option>
+                                <option className='font-content'>Chọn loại xe</option>
+                                <option className='font-content' value="Xe máy">Xe máy </option>
+                                <option className='font-content' value="Xe ô tô">Xe ô tô</option>
                                 <option className='font-content' value="VIP">VIP</option>
                                 {/* <option className='font-content' value="VIP2">VIP2</option> */}
                             </Form.Select>
                             <Form.Group className="mb-3 mt-3" controlId="formBasicPrice">
-                                <Form.Control type="number" placeholder="ໃສ່ລາຄາ" onChange={handlePriceChange} value={amount} className='font-content' style={{ border: error && !amount ? '1px solid red' : '' }} />
+                                <Form.Control type="number" placeholder="Nhập giá " onChange={handlePriceChange} value={amount} className='font-content' style={{ border: error && !amount ? '1px solid red' : '' }} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicNotes">
-                                <Form.Label className='main-menu'>ຫມາຍເຫດ</Form.Label>
+                                <Form.Label className='main-menu'>Ghi chú</Form.Label>
                                 <Form.Control as="textarea" rows={3} onChange={handleNotesChange} value={note} className='font-content' />
                             </Form.Group>
                         </Form>
