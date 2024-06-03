@@ -9,8 +9,10 @@ import imgNoData from "../asset/image/Animation - 1711077741146.gif"; // Import 
 import Navbarr from '../Components/Navbar';
 import { fetchCarHistory } from '../Services/api';
 import { FaCar, FaCoins } from 'react-icons/fa';
+import Breadcrumb from '../Components/BreadCrumNav';
 
 function CarHistory() {
+    const paths = ['report', 'Category', 'Subcategory', 'Product'];
     const [data, setData] = useState([]);
     const [note, setNote] = useState('');
     const [sign, setSign] = useState('');
@@ -21,8 +23,8 @@ function CarHistory() {
     const [loading, setLoading] = useState(true);
     const [carTypeCount, setCarTypeCount] = useState({});
     const [sumByType, setSumByType] = useState({
-        "ເງິນສົດ": 0,
-        "ເງິນໂອນ": 0,
+        "Tiền mặt": 0,
+        "Chuyển khoản": 0,
         "Total": 0
     });
     const [selectedTimeRange, setSelectedTimeRange] = useState('');
@@ -94,8 +96,8 @@ function CarHistory() {
 
     const calculateCarTypeCount = (data) => {
         const counts = {
-            "ລົດຈັກ": 0,
-            "ລົດໃຫຍ່": 0,
+            "Xe máy": 0,
+            "Xe ô tô": 0,
             "VIP": 0,
         };
         data.forEach(item => {
@@ -103,25 +105,25 @@ function CarHistory() {
             counts[carType] = (counts[carType] || 0) + 1;
         });
         const totalCarTypes = Object.values(counts).reduce((acc, curr) => acc + curr, 0);
-        counts["ລວມ"] = totalCarTypes;
+        counts["Tổng"] = totalCarTypes;
         setCarTypeCount(counts);
     };
 
     const calculateAmountSumByType = (data) => {
         const sumByType = {
-            "ເງິນສົດ": 0,
-            "ເງິນໂອນ": 0
+            "Tiền mặt": 0,
+            "Chuyển khoản": 0
         };
         data.forEach(item => {
             const money = item.money;
-            if (money === "ເງິນສົດ") {
-                sumByType["ເງິນສົດ"] += parseFloat(item.amount);
-            } else if (money === "ເງິນໂອນ") {
-                sumByType["ເງິນໂອນ"] += parseFloat(item.amount);
+            if (money === "Tiền mặt") {
+                sumByType["Tiền mặt"] += parseFloat(item.amount);
+            } else if (money === "Chuyển khoản") {
+                sumByType["Chuyển khoản"] += parseFloat(item.amount);
             }
         });
         const totalSum = Object.values(sumByType).reduce((total, value) => total + value, 0);
-        sumByType["ລວມ"] = totalSum;
+        sumByType["Tổng"] = totalSum;
         setSumByType(sumByType);
     };
 
@@ -140,9 +142,13 @@ function CarHistory() {
         <>
             <Navbarr />
             <Container style={{ backgroundColor: "#FFAF45", borderRadius: "20px 20px 0 0" }} className='font-content'>
+                <div className="App">
+                    {/* <Breadcrumb paths={paths} /> */}
+                    {/* Other components */}
+                </div>
                 <Row>
                     <Col>
-                        <h3 className='page-title p-2'>ປະຫວັດລົດເຂົ້າ-ອອກ </h3>
+                        <h3 className='page-title p-2'>Lịch sử xe ra-vào và thu nhập </h3>
                     </Col>
                 </Row>
                 <br />
@@ -163,12 +169,12 @@ function CarHistory() {
                                 <Form.Group>
                                     <InputGroup>
                                         <InputGroup.Text id="basic-addon1" style={{ backgroundColor: "white" }}><FontAwesomeIcon icon={faMagnifyingGlass} className='' /></InputGroup.Text>
-                                        <Form.Control type="text" onChange={(e) => setSign(e.target.value)} placeholder='ຄົ້ນຫາທະບຽນ/ກົງເຕີ' />
+                                        <Form.Control type="text" onChange={(e) => setSign(e.target.value)} placeholder='Tìm kiểm Số biến /Số công tơ ' />
                                     </InputGroup>
                                 </Form.Group>
                             </Col>
                             <Col xs={6} md={3}>
-                                <Button variant="primary" onClick={() => setShowModal(true)} xs={5} md={4} className='mb-2 w-100'>ເລືອກຊ່ວງເວລາ</Button>
+                                <Button variant="primary" onClick={() => setShowModal(true)} xs={5} md={4} className='mb-2 w-100'>Chọn một khoảng thời gian</Button>
                             </Col>
                         </Row>
                     </Form>
@@ -187,12 +193,12 @@ function CarHistory() {
                                 <Col md={6} xs={12} className='mb-2'>
                                     <div className="card">
                                         <div className="card-body">
-                                            <h5 className="card-title " style={{ color: "#FFAF45" }}><FaCar size={32} style={{ margin: "0rem 1rem 0rem 1rem", }} /> ປະເພດລົດ </h5>
+                                            <h5 className="card-title " style={{ color: "#FFAF45" }}><FaCar size={32} style={{ margin: "0rem 1rem 0rem 1rem", }} /> Loại xe </h5>
                                             <ul className="list-group list-group-flush">
                                                 {Object.keys(carTypeCount).map((carType, index) => (
                                                     <li key={carType} className="list-group-item d-flex justify-content-between align-items-center">
                                                         <strong>{carType}</strong>
-                                                        <span className="badge bg-primary rounded-pill">ຈຳນວນ : {carTypeCount[carType]} ຄັນ </span>
+                                                        <span className="badge bg-primary rounded-pill">Số lượng : {carTypeCount[carType]} xe </span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -202,13 +208,13 @@ function CarHistory() {
                                 <Col md={6} xs={12}>
                                     <div className="card">
                                         <div className="card-body">
-                                            <h5 className="card-title " style={{ marginBottom: "1.6rem", color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> ຈຳນວນເງິນ</h5>
+                                            <h5 className="card-title " style={{ marginBottom: "1.6rem", color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> Số tiền </h5>
                                             <br></br>
                                             <ul className="list-group list-group-flush">
                                                 {Object.entries(sumByType).map(([type, sum]) => (
                                                     <li key={type} className="list-group-item d-flex justify-content-between align-items-center">
                                                         <strong>{type}</strong>
-                                                        <span className="badge bg-primary rounded-pill">ຈຳນວນ : {sum.toLocaleString()} ກີບ  </span>
+                                                        <span className="badge bg-primary rounded-pill">Số lượng : {sum.toLocaleString()} đ  </span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -222,7 +228,7 @@ function CarHistory() {
                 <br />
                 <Row style={{ marginBottom: "2px" }}>
                     <Col>
-                        <Button variant="primary" onClick={() => window.open("data:application/vnd.ms-excel," + encodeURIComponent(document.getElementById('table-to-xls').outerHTML), "_blank", "fullscreen=yes")} >ດາວໂຫລດສູ່ excel</Button>
+                        <Button variant="primary" onClick={() => window.open("data:application/vnd.ms-excel," + encodeURIComponent(document.getElementById('table-to-xls').outerHTML), "_blank", "fullscreen=yes")} >Download to excel</Button>
                     </Col>
                 </Row>
 
@@ -232,13 +238,13 @@ function CarHistory() {
                             <thead className='main-menu'>
                                 <tr>
                                     <th>#</th>
-                                    <th>ທະບຽນ/ເລກກົງເຕີ</th>
-                                    <th>ປະເພດ</th>
-                                    <th>ລາຄາ</th>
-                                    <th>ປະເພດສຳລະ</th>
-                                    <th>ຫມາຍເຫດ</th>
-                                    <th>ເວລາເຂົ້າ</th>
-                                    <th>ເວລາອອກ</th>
+                                    <th>Số biến /số công tơ mét xe</th>
+                                    <th>Loại xe</th>
+                                    <th>Đơn gía</th>
+                                    <th>Thanh toán</th>
+                                    <th>Ghi chú</th>
+                                    <th>Giờ vào </th>
+                                    <th>Giờ ra</th>
                                 </tr>
                             </thead>
                             <tbody className='font-content'>

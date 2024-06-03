@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Spinner, Form, Table, Button, Card, InputGroup, Container, Row, Col } from 'react-bootstrap';
+import {
+    Spinner,
+    Form,
+    Table,
+    InputGroup,
+    Container,
+    Row,
+    Col
+} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Navbarr from '../Components/Navbar';
@@ -18,7 +26,7 @@ const Checkout = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [carTypeCount, setCarTypeCount] = useState({});
-    const [sumByType, setSumByType] = useState({ "ເງິນສົດ": 0, "ເງິນໂອນ": 0 });
+    const [sumByType, setSumByType] = useState({ "Tiền mặt": 0, "Chuyển khoản": 0 });
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -34,9 +42,9 @@ const Checkout = () => {
             setTableData(orders);
             calculateCarTypeCount(orders);
             calculateAmountSumByType(orders);
-            setLoading(false);
         } catch (error) {
             console.log(error);
+        } finally {
             setLoading(false);
         }
     };
@@ -50,7 +58,7 @@ const Checkout = () => {
     };
 
     const calculateAmountSumByType = (data) => {
-        const sumByType = { "Tiền mặt": 0, "Chuyên khoản": 0 };
+        const sumByType = { "Tiền mặt": 0, "Chuyển khoản": 0 };
         data.forEach(item => {
             const money = item.money;
             sumByType[money] += parseFloat(item.amount || 0);
@@ -75,22 +83,22 @@ const Checkout = () => {
     const handlePageChange = (pageNumber) => { setCurrentPage(pageNumber); }
 
     const showConfirmationDialog = (orderId, status) => {
-        const actionText = status === 'CANCEL' ? 'ຍົກເລີກ ບິນແທ້ບໍ ?' : 'ປ່ອຍລົດ ແທ້ບໍ ?';
+        const actionText = status === 'CANCEL' ? ' hủy bỏ?' : ' Xe đi?';
         Swal.fire({
-            title: 'ທ່ານ ຕ້ອງການ?',
+            title: 'Bạn muốn?',
             text: actionText,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'ຕົກລົງ'
+            confirmButtonText: 'Đồng ý'
         }).then((result) => {
             if (result.isConfirmed) {
                 handleUpdateStatus(orderId, status);
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "ດຳເນີນການສຳເລັດ",
+                    title: "Thực hiện thành công",
                     showConfirmButton: false,
                     timer: 2000
                 });
@@ -102,6 +110,11 @@ const Checkout = () => {
         setSelectedOrderId(id);
         showConfirmationDialog(id, status);
     };
+
+    const filteredData = tableData.filter(item => item.userId === userId && (
+        (item.sign && item.sign.toString().toLowerCase().includes(sign.toLowerCase())) ||
+        (item.carType && item.carType.toString().toLowerCase().includes(sign.toLowerCase()))
+    ));
 
     return (
         <>
@@ -125,12 +138,14 @@ const Checkout = () => {
                         <Col md={6} xs={12}>
                             <div className="card">
                                 <div className="card-body">
-                                    <h5 className="card-title" style={{ color: "#FFAF45" }}>  <FaCar size={32} style={{ margin: "0rem 1rem 0rem 1rem", }} />Loại xe </h5>
+                                    <h5 className="card-title" style={{ color: "#FFAF45" }}>
+                                        <FaCar size={32} style={{ margin: "0rem 1rem 0rem 1rem" }} />Loại xe
+                                    </h5>
                                     <ul className="list-group list-group-flush">
                                         {Object.keys(carTypeCount).map((carType, index) => (
                                             <li key={carType} className="list-group-item d-flex justify-content-between align-items-center">
                                                 <strong>{carType}</strong>
-                                                <span className="badge bg-primary rounded-pill">số lượng : {carTypeCount[carType]} xe </span>
+                                                <span className="badge bg-primary rounded-pill">Số lượng: {carTypeCount[carType]} xe</span>
                                             </li>
                                         ))}
                                     </ul>
@@ -140,13 +155,14 @@ const Checkout = () => {
                         <Col md={6} xs={12}>
                             <div className="card">
                                 <div className="card-body">
-                                    <h5 className="card-title" style={{ marginBottom: "1.6rem", color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> Số tiền </h5>
-                                    <br></br>
+                                    <h5 className="card-title" style={{ marginBottom: "1.6rem", color: "#FFAF45" }}>
+                                        <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> Số tiền
+                                    </h5>
                                     <ul className="list-group list-group-flush">
                                         {Object.entries(sumByType).map(([type, sum]) => (
                                             <li key={type} className="list-group-item d-flex justify-content-between align-items-center">
                                                 <strong>{type}</strong>
-                                                <span className="badge bg-primary rounded-pill">Số lượng : {sum.toLocaleString()} đ  </span>
+                                                <span className="badge bg-primary rounded-pill">Số lượng: {sum.toLocaleString()} đ</span>
                                             </li>
                                         ))}
                                     </ul>
@@ -160,8 +176,14 @@ const Checkout = () => {
                         <Form>
                             <Form.Group>
                                 <InputGroup>
-                                    <InputGroup.Text id="basic-addon1" style={{ backgroundColor: "white" }}><FontAwesomeIcon icon={faMagnifyingGlass} /></InputGroup.Text>
-                                    <Form.Control type="text" placeholder='Tìm kiếm số biển / công tơ mét xe' onChange={(e) => setSign(e.target.value)} />
+                                    <InputGroup.Text id="basic-addon1" style={{ backgroundColor: "white" }}>
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                    </InputGroup.Text>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder='Tìm kiếm số biển / công tơ mét xe'
+                                        onChange={(e) => setSign(e.target.value)}
+                                    />
                                 </InputGroup>
                             </Form.Group>
                         </Form>
@@ -174,11 +196,11 @@ const Checkout = () => {
                                 <tr>
                                     <th>#</th>
                                     <th>Số biến xe/Công tơ mét xe</th>
-                                    <th>loại xe </th>
-                                    <th>đơn giá </th>
-                                    <th>Thanh toán </th>
+                                    <th>Loại xe</th>
+                                    <th>Đơn giá</th>
+                                    <th>Thanh toán</th>
                                     <th>Ghi chú</th>
-                                    <th >Trạng thái </th>
+                                    <th>Trạng thái</th>
                                 </tr>
                             </thead>
                             <tbody className='font-content'>
@@ -188,19 +210,16 @@ const Checkout = () => {
                                             <Spinner animation="border" role="status"></Spinner>
                                         </td>
                                     </tr>
-                                ) : tableData
-                                    .filter(item => item.userId === userId)
-                                    .slice((currentPage - 1) * 30, currentPage * 30)
-                                    .length === 0 ? (
+                                ) : filteredData.length === 0 ? (
                                     <tr>
                                         <td colSpan="7" style={{ textAlign: "center" }}>
                                             <div style={{ fontSize: "18px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", color: "#6B7280", fontWeight: "400" }}>
-                                                <NoDataComponent imgSrc={imgNoData} altText="No Data" /> Không có dữ liệu</div>
+                                                <NoDataComponent imgSrc={imgNoData} altText="No Data" /> Không có dữ liệu
+                                            </div>
                                         </td>
                                     </tr>
                                 ) : (
-                                    tableData
-                                        .filter(item => item.userId === userId)
+                                    filteredData
                                         .slice((currentPage - 1) * 30, currentPage * 30)
                                         .map((item, index) => (
                                             <tr key={item._id}>
@@ -211,8 +230,18 @@ const Checkout = () => {
                                                 <td>{item.money}</td>
                                                 <td>{item.note}</td>
                                                 <td>
-                                                    <button style={{ backgroundColor: "red", color: "white", border: "none", borderRadius: "5px", marginRight: "5px" }} onClick={() => handleButtonClick(item._id, 'CANCEL')}>ຍົກເລີກບິນ</button>
-                                                    <button style={{ backgroundColor: "green", color: "white", border: "none", borderRadius: "5px" }} onClick={() => handleButtonClick(item._id, 'OFFLINE')}>ປ່ອຍລົດອອກ</button>
+                                                    <button
+                                                        style={{ backgroundColor: "red", color: "white", border: "none", borderRadius: "5px", marginRight: "5px" }}
+                                                        onClick={() => handleButtonClick(item._id, 'CANCEL')}
+                                                    >
+                                                        Hủy bỏ
+                                                    </button>
+                                                    <button
+                                                        style={{ backgroundColor: "green", color: "white", border: "none", borderRadius: "5px" }}
+                                                        onClick={() => handleButtonClick(item._id, 'OFFLINE')}
+                                                    >
+                                                        Xe đi
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))
@@ -222,7 +251,7 @@ const Checkout = () => {
                         <br />
                         <PaginationComponent
                             currentPage={currentPage}
-                            totalPages={Math.ceil(tableData.length / 30)}
+                            totalPages={Math.ceil(filteredData.length / 30)}
                             handlePageChange={handlePageChange}
                         />
                     </Col>

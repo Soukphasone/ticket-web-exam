@@ -15,22 +15,25 @@ const HorizontalMenu = () => {
                         <Nav className="horizontal-menu" >
 
                             <Nav.Item>
-                                <Nav.Link as={Link} to="/" className='main-menu-list' style={{ width: "100%" }}>ພິມໃບບິນ</Nav.Link>
+                                <Nav.Link as={Link} to="/" className='main-menu-list' style={{ width: "100%" }}>In hóa đơn
+
+                                </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link as={Link} to="/checkout" className='main-menu-list' style={{ width: "100%" }}>ລົດໃນຄອກຂະນະນີ້</Nav.Link>
+                                <Nav.Link as={Link} to="/checkout" className='main-menu-list' style={{ width: "100%" }}>
+                                    Xe ở bãi đậu
+
+                                </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link as={Link} to="/report" className='main-menu-list' >ລາຍງານ</Nav.Link >
+                                <Nav.Link as={Link} to="/report" className='main-menu-list' >
+                                    Thông kê
+
+                                </Nav.Link >
                             </Nav.Item>
-                            {/* <Nav.Item>
-                                <Nav.Link as={Link} to="/carhistory" className='main-menu-list' style={{ width: "100%" }}>ປະຫວັດລົດເຂົ້າ-ອອກ</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link as={Link} to="/moneyhistory" className='main-menu-list' style={{ width: "100%" }}>ປະຫວັດຍອດເງິນ</Nav.Link>
-                            </Nav.Item> */}
+
                             <Nav.Item style={{ width: "100%" }}>
-                                <Nav.Link as={Link} to="/setting" className='main-menu-list' style={{ width: "100%" }}>ຕັ້ງຄ່າ</Nav.Link>
+                                <Nav.Link as={Link} to="/setting" className='main-menu-list' style={{ width: "100%" }}>Cái đặt</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>

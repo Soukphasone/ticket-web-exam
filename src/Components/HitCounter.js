@@ -124,7 +124,7 @@ const HitCounter = () => {
 
                 <Row>
                     <Col>
-                        <h3 className='page-title p-2'>ຈັດອັນດັບ ລູກຄ້າປະຈຳ</h3>
+                        <h3 className='page-title p-2'>Xếp hạng khách hàng</h3>
                     </Col>
                 </Row>
                 <Row className="mt-3">
@@ -144,13 +144,13 @@ const HitCounter = () => {
                         <Form.Group>
                             <InputGroup>
                                 <InputGroup.Text style={{ backgroundColor: "white" }}><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
-                                <Form.Control type="text" onChange={(e) => setSign(e.target.value)} placeholder='ຄົ້ນຫາ ທະບຽນ/ກົງເຕີ' />
+                                <Form.Control type="text" onChange={(e) => setSign(e.target.value)} placeholder='Tìm kiếm Số biến / Số công tơ' />
                             </InputGroup>
                         </Form.Group>
                     </Col>
                     {/* Add button to open time range selection modal */}
                     <Col xs={12} md={3}>
-                        <Button variant="primary" onClick={() => setShowModal(true)} xs={5} md={4} className='mb-2 w-100'>ເລືອກຊ່ວງເວລາ</Button>
+                        <Button variant="primary" onClick={() => setShowModal(true)} xs={5} md={4} className='mb-2 w-100'>Chọn một khoảng thới gian</Button>
                     </Col>
 
                 </Row>
@@ -165,11 +165,11 @@ const HitCounter = () => {
                                 <Table responsive>
                                     <thead>
                                         <tr>
-                                            <th>ລຳດັບ</th>
-                                            <th>ທະບຽນ</th>
-                                            <th>ປະເພດລົດ</th>
-                                            <th>ຈຳນວນຄັ້ງ</th>
-                                            <th className="text-center">ລາຍລະອຽດ</th>
+                                            <th>#</th>
+                                            <th>Số biến</th>
+                                            <th>Loại xe</th>
+                                            <th>Sồ lần</th>
+                                            <th className="text-center">Xem chi tiết</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -205,7 +205,7 @@ const HitCounter = () => {
             {/* Modal for time range selection */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Select Time Range</Modal.Title>
+                    <Modal.Title>Chọn một khoảng thới gian</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="time-range-buttons">
@@ -221,23 +221,28 @@ const HitCounter = () => {
             </Modal>
 
             {/* Modal for displaying hit details */}
-            <Modal show={selectedHitDetails !== null} onHide={() => setSelectedHitDetails(null)} size="lg" >
+            <Modal show={selectedHitDetails !== null} onHide={() => setSelectedHitDetails(null)} size="xl" centered >
                 <Modal.Header closeButton>
-                    <Modal.Title>Hit Details</Modal.Title>
+                    <Modal.Title>Chi tiết của khách hàng</Modal.Title>
+                    <br></br>
+
                 </Modal.Header>
                 <Modal.Body>
+                    <h5>Số lượng : {selectedHitDetails?.length || 0} lần</h5>
                     {selectedHitDetails && (
                         <Table striped bordered hover>
                             <thead>
+
                                 <tr>
+
                                     <th>#</th>
-                                    <th>Amount</th>
-                                    <th>Car Type</th>
-                                    <th>Created At</th>
-                                    <th>Created Out</th>
-                                    <th>Money</th>
-                                    <th>Note</th>
-                                    <th>Sign</th>
+                                    <th>Sồ tiền </th>
+                                    <th>Loại xe</th>
+                                    <th>Ngày vào</th>
+                                    <th>Nhày ra</th>
+                                    <th>Thanh toán</th>
+                                    <th>Ghi chú</th>
+                                    <th>Số biến </th>
                                     {/* Add more fields as needed */}
                                 </tr>
                             </thead>
