@@ -115,7 +115,7 @@ function Ticket() {
                     <Col md={2} xs={12} ></Col>
                     <Col md={8} xs={12} >  <Form>
                         <Form.Group controlId="name">
-                            <Form.Label className='main-menu'>Biển số xe / Công tác mét xe</Form.Label>
+                            <Form.Label className='main-menu'>Biển số xe / Công tơ mét xe</Form.Label>
                             <Form.Control type="text" name="sign" value={formData.sign} onChange={handleChange} style={{ border: error && !formData.sign.trim() ? '1px solid red' : '' }} />
                             {error && !formData.sign.trim() && <div style={{ color: 'red' }} className='font-content'>ກະລຸນາ ໃສ່ທະບຽນລົດ ຫລື ເລກກົງເຕີ</div>}
                         </Form.Group>
@@ -143,10 +143,10 @@ function Ticket() {
                                     inline
                                     type="radio"
                                     id="transfer"
-                                    label="Chuyên khoản"
+                                    label="Chuyển khoản"
                                     name="paymentMethod"
-                                    value="Chuyên khoản"
-                                    checked={formData.money === 'Chuyên khoản'}
+                                    value="Chuyển khoản"
+                                    checked={formData.money === 'Chuyển khoản'}
                                     onChange={handlePaymentMethodChange}
                                     className='main-menu'
                                 />
@@ -162,7 +162,7 @@ function Ticket() {
                             ) : (
                                 data.length === 0 ? (
                                     <p>
-                                        <a href="/setting">Vui lòng , đặt giá và loại</a>
+                                        <a href="/setting">Vui lòng , đặt giá từng loại xe</a>
                                     </p>
                                 ) : (
                                     data.map(item => (

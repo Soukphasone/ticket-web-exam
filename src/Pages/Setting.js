@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbarr from '../Components/Navbar';
-import { Button, Col, Container, Modal, Row, Table, Form, OverlayTrigger, Tooltip, Spinner } from 'react-bootstrap';
-import { Delete, Edit } from '@mui/icons-material';
+import { Button, Col, Container, Modal, Row, Table, Form, OverlayTrigger, Tooltip, Spinner, Breadcrumb } from 'react-bootstrap';
+import { Category, Delete, Edit, HomeMax } from '@mui/icons-material';
 import Swal from 'sweetalert2';
+import { Route, Router, Routes } from 'react-router-dom';
+import Body from './Body';
 
 function Setting() {
+    const paths = [
+        // { label: 'Home', link: '/' },
+        { label: 'lịch sử tiền và Money', link: '/Carhistory' },
+        { label: 'Subcategory', link: '/subcategory' },
+        { label: 'Product', link: '/product' }
+    ];
     const [show, setShow] = useState(false);
     const [carType, setCarType] = useState('');
     const [amount, setAmount] = useState('');
@@ -118,13 +126,13 @@ function Setting() {
     const handleDelete = async (id) => {
         // Show SweetAlert confirmation dialog
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this car data!',
+            title: 'Bạn muốn ?',
+            text: 'Xóa thông tin không!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Xóa đi!'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
@@ -152,6 +160,7 @@ function Setting() {
         <div>
             <Navbarr />
             <Container className='vh-100' style={{ backgroundColor: "#FFAF45", borderRadius: "20px 20px 0 0" }}>
+
                 <Row>
                     <Col>
                         <h3 className='mt-4 page-title'>Đặt giá từng loại xe</h3>
@@ -213,7 +222,7 @@ function Setting() {
                                                 <OverlayTrigger
                                                     key={`delete-tooltip-${index}`}
                                                     placement="top"
-                                                    overlay={<Tooltip id={`tooltip-delete-${index}`}>ລົບ</Tooltip>}
+                                                    overlay={<Tooltip id={`tooltip-delete-${index}`}>Xóa</Tooltip>}
                                                 >
                                                     <Button variant="danger" className='main-menu' onClick={() => handleDelete(car._id)} style={{ padding: "2px" }}>
                                                         <Delete />
@@ -230,7 +239,7 @@ function Setting() {
                 </Row>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{editId !== null ? 'ແກ້ໄຂລາຍລະອຽດ' : 'ເພີ່ມລາຍລະອຽດ'}</Modal.Title>
+                        <Modal.Title>{editId !== null ? 'Chỉnh sửa thông tin' : 'Thêm thông tin'}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form>
@@ -252,10 +261,10 @@ function Setting() {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose} className='main-menu'>
-                            ຍົກເລີກ
+                            Hủy bỏ
                         </Button>
                         <Button variant="primary" onClick={handleSubmit} className='main-menu'>
-                            {loading ? <Spinner animation="border" variant="light" size="sm" /> : (editId !== null ? 'ບັນທຶກການແກ້ໄຂ' : 'ບັນທຶກການເພີ່ມ')}
+                            {loading ? <Spinner animation="border" variant="light" size="sm" /> : (editId !== null ? 'Chỉnh sửa ' : 'Thêm')}
                         </Button>
                     </Modal.Footer>
                 </Modal>

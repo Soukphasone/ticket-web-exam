@@ -26,8 +26,8 @@ function CancelBill() {
     const [loading, setLoading] = useState(true);
     const [carTypeCount, setCarTypeCount] = useState({});
     const [sumByType, setSumByType] = useState({
-        "ເງິນສົດ": 0,
-        "ເງິນໂອນ": 0,
+        "Tiền mặt": 0,
+        "Chuyển tiền": 0,
         "Total": 0
     });
 
@@ -50,8 +50,8 @@ function CancelBill() {
 
     const calculateCarTypeCount = (data) => {
         const counts = {
-            "ລົດຈັກ": 0,
-            "ລົດໃຫຍ່": 0,
+            "Xe máy": 0,
+            "Xe ô tô": 0,
             "VIP": 0,
         };
         data.forEach(item => {
@@ -61,29 +61,29 @@ function CancelBill() {
 
         // Summing all car types
         const totalCarTypes = Object.values(counts).reduce((acc, curr) => acc + curr, 0);
-        counts["ລວມ"] = totalCarTypes;
+        counts["Tổng"] = totalCarTypes;
 
         setCarTypeCount(counts);
     };
 
     const calculateAmountSumByType = (data) => {
         const sumByType = {
-            "ເງິນສົດ": 0,
-            "ເງິນໂອນ": 0
+            "Tiền mặt": 0,
+            "Chuyển tiền": 0
         };
 
         data.forEach(item => {
             const money = item.money;
-            if (money === "ເງິນສົດ") {
-                sumByType["ເງິນສົດ"] += parseFloat(item.amount);
-            } else if (money === "ເງິນໂອນ") {
-                sumByType["ເງິນໂອນ"] += parseFloat(item.amount);
+            if (money === "Tiền mặt") {
+                sumByType["Tiền mặt"] += parseFloat(item.amount);
+            } else if (money === "Chuyển tiền") {
+                sumByType["Chuyển tiền"] += parseFloat(item.amount);
             }
         });
 
         // Calculate total sum for each type
         const totalSum = Object.values(sumByType).reduce((total, value) => total + value, 0);
-        sumByType["ລວມ"] = totalSum;
+        sumByType["Tổng"] = totalSum;
 
         setSumByType(sumByType);
     };
@@ -101,7 +101,7 @@ function CancelBill() {
             <Container style={{ backgroundColor: "#FFAF45", borderRadius: "20px 20px 0 0" }} className='font-content'>
                 <Row>
                     <Col>
-                        <h3 className='page-title p-2'>ປະຫວັດບິນຍົກເລີກ</h3>
+                        <h3 className='page-title p-2'>Hóa đơn đã bị hủy bỏ</h3>
                     </Col>
                 </Row>
                 <br />
@@ -122,7 +122,7 @@ function CancelBill() {
                                 <Form.Group>
                                     <InputGroup>
                                         <InputGroup.Text id="basic-addon1" style={{ backgroundColor: "white" }}><FontAwesomeIcon icon={faMagnifyingGlass} className='' /></InputGroup.Text>
-                                        <Form.Control type="text" onChange={(e) => setSign(e.target.value)} placeholder='ຄົ້ນຫາທະບຽນ/ກົງເຕີ' />
+                                        <Form.Control type="text" onChange={(e) => setSign(e.target.value)} placeholder='Tìm kiếm Số biến /Số công tơ' />
                                     </InputGroup>
                                 </Form.Group>
                             </Col>
@@ -143,12 +143,12 @@ function CancelBill() {
                                 <Col md={6} xs={12} className='mb-2'>
                                     <div className="card">
                                         <div className="card-body">
-                                            <h5 className="card-title " style={{ color: "#FFAF45" }}><FaCar size={32} style={{ margin: "0rem 1rem 0rem 1rem", }} /> ປະເພດລົດ </h5>
+                                            <h5 className="card-title " style={{ color: "#FFAF45" }}><FaCar size={32} style={{ margin: "0rem 1rem 0rem 1rem", }} /> Loại xe </h5>
                                             <ul className="list-group list-group-flush">
                                                 {Object.keys(carTypeCount).map((carType, index) => (
                                                     <li key={carType} className="list-group-item d-flex justify-content-between align-items-center">
                                                         <strong>{carType}</strong>
-                                                        <span className="badge bg-primary rounded-pill">ຈຳນວນ : {carTypeCount[carType]} ຄັນ </span>
+                                                        <span className="badge bg-primary rounded-pill">Số lượng : {carTypeCount[carType]} xe</span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -158,13 +158,13 @@ function CancelBill() {
                                 <Col md={6} xs={12}>
                                     <div className="card">
                                         <div className="card-body">
-                                            <h5 className="card-title " style={{ marginBottom: "1.6rem", color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> ຈຳນວນເງິນ</h5>
+                                            <h5 className="card-title " style={{ marginBottom: "1.6rem", color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> Sồ tiền</h5>
                                             <br></br>
                                             <ul className="list-group list-group-flush">
                                                 {Object.entries(sumByType).map(([type, sum]) => (
                                                     <li key={type} className="list-group-item d-flex justify-content-between align-items-center">
                                                         <strong>{type}</strong>
-                                                        <span className="badge bg-primary rounded-pill">ຈຳນວນ : {sum.toLocaleString()} ກີບ  </span>
+                                                        <span className="badge bg-primary rounded-pill">Số lượng : {sum.toLocaleString()} đ  </span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -178,7 +178,7 @@ function CancelBill() {
                 <br />
                 <Row style={{ marginBottom: "2px" }}>
                     <Col>
-                        <Button variant="primary" onClick={() => window.open("data:application/vnd.ms-excel," + encodeURIComponent(document.getElementById('table-to-xls').outerHTML), "_blank", "fullscreen=yes")} >ດາວໂຫລດສູ່ excel</Button>
+                        <Button variant="primary" onClick={() => window.open("data:application/vnd.ms-excel," + encodeURIComponent(document.getElementById('table-to-xls').outerHTML), "_blank", "fullscreen=yes")} >export to excel</Button>
                     </Col>
                 </Row>
 
@@ -188,13 +188,13 @@ function CancelBill() {
                             <thead className='main-menu'>
                                 <tr>
                                     <th>#</th>
-                                    <th>ທະບຽນ/ເລກກົງເຕີ</th>
-                                    <th>ປະເພດ</th>
-                                    <th>ລາຄາ</th>
-                                    <th>ປະເພດສຳລະ</th>
-                                    <th>ຫມາຍເຫດ</th>
-                                    <th>ເວລາເຂົ້າ</th>
-                                    <th>ເວລາອອກ</th>
+                                    <th>Số biến / Số công tơ</th>
+                                    <th>Loại xe</th>
+                                    <th>Số tiền </th>
+                                    <th>Thanh toán</th>
+                                    <th>Ghi chú</th>
+                                    <th>Giờ vào</th>
+                                    <th>Giờ ra</th>
                                 </tr>
                             </thead>
                             <tbody className='font-content'>
@@ -218,7 +218,7 @@ function CancelBill() {
                                                         color: "#6B7280",
                                                         fontWeight: "400",
                                                     }}>
-                                                    <NoDataComponent imgSrc={imgNoData} altText="Sidebar Icon" /> ບໍ່ມີຂໍ້ມູນ/
+                                                    <NoDataComponent imgSrc={imgNoData} altText="Sidebar Icon" /> Không có dữ liệu
                                                 </div>
                                             </td>
                                         </tr>

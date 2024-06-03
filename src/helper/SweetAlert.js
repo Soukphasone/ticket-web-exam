@@ -13,7 +13,7 @@ export const showErrorAlert = (message) => {
 
 export const showSuccessAlert = (message) => {
     Swal.fire({
-        title: 'ດຳເນີນການສຳເລັດ!',
+        title: 'Thực hiện thành công ',
         text: message,
         icon: 'success',
         showConfirmButton: false,
@@ -24,21 +24,21 @@ export const showSuccessAlert = (message) => {
 
 export const showConfirmationAlert = (onConfirm) => {
     Swal.fire({
-        title: '<span style="font-size: smaller;">ທ່ານຕ້ອງການປ່ຽນສະຖານະແທ້ບໍ ?</span>',
+        title: '<span style="font-size: smaller;">Bạn có muốn thay đổi trạng thái ?</span>',
         // text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: `ຕົກລົງ`,
-        cancelButtonText: `ຍົກເລີກແລ້ວ`, // Edited cancelButtonText
+        confirmButtonText: `Đồng ý`,
+        cancelButtonText: `Hủy bỏ`, // Edited cancelButtonText
     }).then((result) => {
         if (result.isConfirmed) {
             onConfirm();
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "ດຳເນີນການສຳເລັດ",
+                title: "Thực hiện thành công ",
                 showConfirmButton: false,
                 timer: 1500
             });
