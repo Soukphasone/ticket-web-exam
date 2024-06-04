@@ -247,7 +247,7 @@ function Setting() {
                                 <option className='font-content'>Chọn loại xe</option>
                                 <option className='font-content' value="Xe máy">Xe máy </option>
                                 <option className='font-content' value="Xe ô tô">Xe ô tô</option>
-                                <option className='font-content' value="VIP">VIP</option>
+                                {/* <option className='font-content' value="VIP">VIP</option> */}
                                 {/* <option className='font-content' value="VIP2">VIP2</option> */}
                             </Form.Select>
                             <Form.Group className="mb-3 mt-3" controlId="formBasicPrice">

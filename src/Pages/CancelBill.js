@@ -52,7 +52,7 @@ function CancelBill() {
         const counts = {
             "Xe máy": 0,
             "Xe ô tô": 0,
-            "VIP": 0,
+            // "VIP": 0,
         };
         data.forEach(item => {
             const carType = item.carType;
@@ -158,8 +158,8 @@ function CancelBill() {
                                 <Col md={6} xs={12}>
                                     <div className="card">
                                         <div className="card-body">
-                                            <h5 className="card-title " style={{ marginBottom: "1.6rem", color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> Sồ tiền</h5>
-                                            <br></br>
+                                            <h5 className="card-title " style={{ color: "#FFAF45" }}> <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> Sồ tiền</h5>
+                                            {/* <br></br> */}
                                             <ul className="list-group list-group-flush">
                                                 {Object.entries(sumByType).map(([type, sum]) => (
                                                     <li key={type} className="list-group-item d-flex justify-content-between align-items-center">

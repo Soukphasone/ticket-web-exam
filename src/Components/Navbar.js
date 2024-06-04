@@ -28,8 +28,8 @@ function Navbarr() {
     const handleLogout = () => {
         // Show confirmation dialog using SweetAlert
         Swal.fire({
-            title: 'Confirm Logout',
-            text: 'Are you sure you want to logout?',
+            title: 'Xác nhận đăng xuất',
+            text: 'Bạn có chắc chắn bạn muốn thoát??',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

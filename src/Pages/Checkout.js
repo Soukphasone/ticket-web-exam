@@ -50,7 +50,11 @@ const Checkout = () => {
     };
 
     const calculateCarTypeCount = (data) => {
-        const counts = { "Xe máy": 0, "Xe ô tô": 0, "VIP": 0 };
+        const counts = {
+            "Xe máy": 0,
+            "Xe ô tô": 0,
+            // "VIP": 0
+        };
         data.forEach(item => { counts[item.carType] = (counts[item.carType] || 0) + 1; });
         const totalCarTypes = Object.values(counts).reduce((acc, curr) => acc + curr, 0);
         counts["Tổng"] = totalCarTypes;
@@ -155,7 +159,7 @@ const Checkout = () => {
                         <Col md={6} xs={12}>
                             <div className="card">
                                 <div className="card-body">
-                                    <h5 className="card-title" style={{ marginBottom: "1.6rem", color: "#FFAF45" }}>
+                                    <h5 className="card-title" style={{ color: "#FFAF45" }}>
                                         <FaCoins size={31} style={{ margin: "0rem 1rem 0rem 1rem" }} /> Số tiền
                                     </h5>
                                     <ul className="list-group list-group-flush">
