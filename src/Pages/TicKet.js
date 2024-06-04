@@ -16,7 +16,7 @@ function Ticket() {
         note: '',
         money: null,
     });
-
+    const username = localStorage.getItem('username').replace(/^"(.*)"$/, '$1');
     const [data, setData] = useState([]);
     const [error, setError] = useState('');
     const [alldata, setAlldata] = useState([]);
@@ -58,6 +58,9 @@ function Ticket() {
                 setAlldata(prevData => [...prevData, response.data]);
                 setFormData({ sign: '', note: '', money: '' });
                 setError('');
+
+                // Print the bill
+                printBill(response.data);
             })
             .catch(error => {
                 if (error.response && error.response.status === 401) {
@@ -71,6 +74,58 @@ function Ticket() {
                 setLoading(false);
             });
     };
+
+    const printBill = (data) => {
+        // Example bill content with better UI
+        const billContent = `
+            <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <h1 style="text-align: center; color: #333;">Bill</h1>
+                <hr style="border: 0; border-top: 2px solid #eee; margin: 20px 0;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <div>
+                        <h2 style="margin: 0; color: #555;">Chi tiết hóa đơn </h2>
+                         <p style="margin: 5px 0; color: #777;">Số hóa đơn: ${data._Id}</p>
+                        <p style="margin: 5px 0; color: #777;">Nhân viên: ${username || 'N/A'}</p>
+                    </div>
+                    <div>
+                        <h2 style="margin: 0; color: #555;">Chi tiết xe</h2>
+                        <p style="margin: 5px 0; color: #777;">Loại xe: ${data.carType}</p>
+                       
+                    </div>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <tr>
+                        <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Số biển / công tơ</th>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${data.sign}</td>
+                    </tr>
+                    <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Số lượng</th>
+                    <td style="border: 1px solid #ddd; padding: 8px;">${data.amount}</td>
+                </tr>
+                    <tr>
+                        <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Ghi chú</th>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${data.note}</td>
+                    </tr>
+                    <tr>
+                        <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Thanh toán</th>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${data.money}</td>
+                    </tr>
+                </table>
+                <div style="text-align: center; color: #555;">
+                    <p style="margin: 5px 0;">Thank you for your order!</p>
+                </div>
+            </div>
+        `;
+
+        const billWindow = window.open('', '_blank', 'width=800,height=600');
+        billWindow.document.write('<html><head><title>Bill</title></head><body>');
+        billWindow.document.write(billContent);
+        billWindow.document.write('</body></html>');
+        billWindow.document.close();
+        billWindow.print();
+    };
+
+
 
     useEffect(() => {
         fetchCars();
@@ -117,7 +172,7 @@ function Ticket() {
                         <Form.Group controlId="name">
                             <Form.Label className='main-menu'>Biển số xe / Công tơ mét xe</Form.Label>
                             <Form.Control type="text" name="sign" value={formData.sign} onChange={handleChange} style={{ border: error && !formData.sign.trim() ? '1px solid red' : '' }} />
-                            {error && !formData.sign.trim() && <div style={{ color: 'red' }} className='font-content'>ກະລຸນາ ໃສ່ທະບຽນລົດ ຫລື ເລກກົງເຕີ</div>}
+                            {error && !formData.sign.trim() && <div style={{ color: 'red' }} className='font-content'>Vui lòng, Nhập số biển /số công tơ</div>}
                         </Form.Group>
 
                         <Form.Group controlId="message">
